@@ -2,7 +2,7 @@
 </style>
 
 <template lang="html">
-  <div>
+  <div class="page--navbar">
     <dynamic-item v-for="n in 3"></dynamic-item>
   </div>
 </template>

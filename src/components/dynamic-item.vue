@@ -47,11 +47,12 @@
     <div class="dynamic-box__head">6006003 这个怎么样</div>
     <div class="dynamic-box__body">
       <div class="dynamic-box__title">这是标题</div>
-      <div class="dynamic-box__title">这是内容。。。内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</div>
+      <div class="dynamic-box__img"><horizon-images></horizon-images></div>
+      <div class="dynamic-box__content">这是内容。。。内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</div>
     </div>
     <div class="dynamic-box__foot">
       <div class="dynamic-box__info">
-        <div><img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS-_Katfl2l44SiXqHT-0PAhpZndKi8G6pnjwoJLYwJYrgKO_2C" style="height:14px;border-radius: 50%;"></div>
+        <div><img src="../assets/logo.png" style="height:14px;border-radius: 50%;"></div>
         <div>王先生</div>
         <div>10:23</div>
       </div>
@@ -64,6 +65,18 @@
 </template>
 
 <script>
+
+import horizonImages from './horizon-images'
+
 export default {
+  data() {
+    return {
+
+    }
+  },
+
+  components: {
+    horizonImages
+  }
 }
 </script>

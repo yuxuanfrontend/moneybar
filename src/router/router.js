@@ -19,6 +19,7 @@ import teamTab from '../pages/team/team-tab'
 // import quotationList from '../pages/quotation/quotation-list'
 //
 // import quotation from '../pages/quotation/quotation-highstock'
+import test from '../pages/test'
 
 
 module.exports = [
@@ -43,5 +44,8 @@ module.exports = [
     ]
   },
 
-
+  {
+    path: '/test',
+    component: test
+  }
 ];
