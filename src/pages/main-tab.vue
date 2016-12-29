@@ -1,4 +1,4 @@
-<style lang="css">
+<style lang="scss">
 </style>
 
 <template lang="html">

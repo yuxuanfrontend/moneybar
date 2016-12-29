@@ -2,7 +2,9 @@
 import mainTab from '../pages/main-tab'
 import dynamiTab from '../pages/dynamic/dynamic-tab'
 import topicTab from '../pages/topic/topic-tab'
+import topiclist from '../pages/topic/topic-list'
 import teamTab from '../pages/team/team-tab'
+import teamdetails from '../pages/team/teamdetails'
 // import foo from fooPath
 // import bar from '../components/bar'
 // import quotation from '../components/quotation'
@@ -42,6 +44,13 @@ module.exports = [
       }
     ]
   },
-
+  {
+    path:'/topiclist',
+    component:topiclist
+  },
+  {
+    path:'/teamdetails',
+    component:teamdetails
+  }
 
 ];
