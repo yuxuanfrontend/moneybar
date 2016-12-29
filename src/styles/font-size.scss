@@ -1,16 +1,39 @@
+html {
+  font-size: 10px;
+}
+
 body {
   font-size: 16px;
 }
 
+@media
+(-webkit-min-device-pixel-ratio: 2) {
+  html {
+    font-size: 20px;
+  }
+  body {
+    font-size: 16px;
+  }
+}
 
-[data-dpr="2"] {
+@media
+(-webkit-min-device-pixel-ratio: 3) {
+  html {
+    font-size: 30px;
+  }
   body {
     font-size: 32px;
   }
 }
 
+[data-dpr="2"] {
+  html, body {
+    font-size: 32px;
+  }
+}
+
 [data-dpr="3"] {
-  body {
+  html, body {
     font-size: 48px;
   }
 }

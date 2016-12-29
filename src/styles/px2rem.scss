@@ -1,8 +1,12 @@
-@function px2rem($px){
-	@return $px*320/$designWidth/20 + rem;
-}
+// @function px2rem($px){
+// 	@return $px*320/$designWidth/20 + rem;
+// }
+//
+// $designWidth: 375;
 
-$designWidth: 750;
+@function px2rem($px){
+	@return $px / 20 + rem;
+}
 
 @mixin flex-center {
 	display: flex;
