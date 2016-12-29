@@ -2,8 +2,8 @@
 </style>
 
 <template lang="html">
-  <div>
-    <mt-navbar v-model="selected">
+  <div class="page">
+    <mt-navbar v-model="selected" :fixed="true">
       <mt-tab-item id="1">动态</mt-tab-item>
       <mt-tab-item id="2">话题</mt-tab-item>
       <mt-tab-item id="3">小组</mt-tab-item>

@@ -1,39 +1,32 @@
+$bodyFontSize: 16px;
+
 html {
-  font-size: 10px;
+  font-size: 20px;
 }
-
 body {
-  font-size: 16px;
+  font-size: $bodyFontSize;
 }
-
-@media
-(-webkit-min-device-pixel-ratio: 2) {
+@media only screen and (min-width: 400px) {
   html {
-    font-size: 18px;
+    font-size: 21.33333333px !important;
   }
   body {
-    font-size: 16px;
+    font-size: 400*$bodyFontSize/375;
   }
 }
-
-@media
-(-webkit-min-device-pixel-ratio: 3) {
+@media only screen and (min-width: 414px) {
   html {
-    font-size: 18px;
+    font-size: 22.08px !important;
   }
   body {
-    font-size: 18px;
+    font-size: 414*$bodyFontSize/375;
   }
 }
-
-[data-dpr="2"] {
-  html, body {
-    font-size: 32px;
+@media only screen and (min-width: 480px) {
+  html {
+    font-size: 25.6px !important;
   }
-}
-
-[data-dpr="3"] {
-  html, body {
-    font-size: 48px;
+  body {
+    font-size: 480*$bodyFontSize/375;
   }
 }

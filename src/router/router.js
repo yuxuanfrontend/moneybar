@@ -44,6 +44,7 @@ module.exports = [
       }
     ]
   },
+  
   {
     path:'/topiclist',
     component:topiclist

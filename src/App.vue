@@ -15,7 +15,8 @@ export default {
 </script>
 
 <style>
-#app{
-  background: #f3f3f3;
+#app {
+  width: 100%;
+  height: 100%;
 }
 </style>
