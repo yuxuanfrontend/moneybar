@@ -14,7 +14,6 @@
   &__foot {
     display: flex;
     font-size: 14px;
-    // justify-content: space-between;
   }
 
   &__info, &__statistic {
@@ -46,19 +45,19 @@
   <div class="dynamic-box">
     <div class="dynamic-box__head">6006003 这个怎么样</div>
     <div class="dynamic-box__body">
-      <div class="dynamic-box__title">这是标题</div>
-      <div class="dynamic-box__img"><horizon-images></horizon-images></div>
-      <div class="dynamic-box__content">这是内容。。。内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</div>
+      <div class="dynamic-box__title">{{data.title}}</div>
+      <div class="dynamic-box__img"><horizon-images :images="data.images"></horizon-images></div>
+      <div class="dynamic-box__content">{{data.content}}</div>
     </div>
     <div class="dynamic-box__foot">
       <div class="dynamic-box__info">
-        <div><img src="../assets/logo.png" style="height:14px;border-radius: 50%;"></div>
-        <div>王先生</div>
-        <div>10:23</div>
+        <div><img :src="data.avator" style="height:14px;border-radius: 50%;"></div>
+        <div>{{data.nickname}}</div>
+        <div>{{data.time}}</div>
       </div>
       <div class="dynamic-box__statistic">
-        <div>1000</div>
-        <div>评论</div>
+        <div>{{data.readAmount}}</div>
+        <div>{{data.commentAmount}}</div>
       </div>
     </div>
   </div>
@@ -67,11 +66,31 @@
 <script>
 
 import horizonImages from './horizon-images'
+import logo from '../assets/logo.png'
 
 export default {
   data() {
     return {
 
+    }
+  },
+
+  props: {
+    data: {
+      default() {
+        return {
+          type: 1,
+          title: '这是标题',
+          content: '这是内容。。。内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
+          images: [logo, logo, logo, logo, logo],
+          avator: logo,
+          nickname: '王先生',
+          time: '10:23',
+          readAmount: 1000,
+          commentAmount: 20
+        }
+      },
+      type: Object
     }
   },
 

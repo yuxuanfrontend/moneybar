@@ -22,16 +22,22 @@ export default {
   },
 
   mounted() {
-    switch (this.$route.path) {
-      case '/dynamic':
-        this.selected = '1'
-        break;
-      case '/topic':
-        this.selected = '2'
-        break;
-      case '/team':
-        this.selected = '3'
-        break;
+    this.switchTab()
+  },
+
+  methods: {
+    switchTab() {
+      switch (this.$route.path) {
+        case '/dynamic':
+          this.selected = '1'
+          break;
+        case '/topic':
+          this.selected = '2'
+          break;
+        case '/team':
+          this.selected = '3'
+          break;
+      }
     }
   },
 
@@ -48,6 +54,10 @@ export default {
           this.$router.push('/team')
           break;
       }
+    },
+
+    $route() {
+      this.switchTab()
     }
   }
 }

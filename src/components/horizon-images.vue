@@ -35,7 +35,7 @@
 <template lang="html">
   <div class="iscroll-images" ref="iscroll">
     <div class="images-wrap">
-      <div class="images-wrap__item" v-for="image in images"><img src="../assets/logo.png"></div>
+      <div class="images-wrap__item" v-for="image in images"><img :src="image"></div>
     </div>
   </div>
 </template>
@@ -53,15 +53,8 @@ export default {
 
   props: {
     images: {
-      default() {
-        return [
-          'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS-_Katfl2l44SiXqHT-0PAhpZndKi8G6pnjwoJLYwJYrgKO_2C',
-          'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS-_Katfl2l44SiXqHT-0PAhpZndKi8G6pnjwoJLYwJYrgKO_2C',
-          'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS-_Katfl2l44SiXqHT-0PAhpZndKi8G6pnjwoJLYwJYrgKO_2C',
-          'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS-_Katfl2l44SiXqHT-0PAhpZndKi8G6pnjwoJLYwJYrgKO_2C',
-        ]
-      },
-      type: Array
+      type: Array,
+      required: true
     }
   },
 
