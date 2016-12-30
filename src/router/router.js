@@ -1,11 +1,14 @@
 // const fooPath = components'/foo'
 import mainTab from '../pages/main-tab'
+
 import dynamiTab from '../pages/dynamic/dynamic-tab'
 import topicTab from '../pages/topic/topic-tab'
 import topiclist from '../pages/topic/topic-list'
 import teamTab from '../pages/team/team-tab'
 import teamdetails from '../pages/team/team-details'
 import teamintro from '../pages/team/team-intro'
+
+import personal from '../pages/personal/personal'
 
 // import foo from fooPath
 // import bar from '../components/bar'
@@ -32,16 +35,19 @@ module.exports = [
     children: [
       {
         path: 'dynamic',
+        name: '动态',
         component: dynamiTab
       },
 
       {
         path: '/topic',
+        name: '话题',
         component: topicTab
       },
 
       {
         path: '/team',
+        name: '小组',
         component: teamTab
       }
     ]
@@ -51,13 +57,21 @@ module.exports = [
     path:'/topiclist',
     component:topiclist
   },
+
   {
     path:'/teamdetails',
     component:teamdetails
   },
+
   {
     path:'/teamintro',
     component:teamintro
+  },
+
+  {
+    path: '/personal',
+    name: '个人中心',
+    component: personal
   }
 
 ];

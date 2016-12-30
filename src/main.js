@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
 import Mint from 'mint-ui'
+import MintMessage from './plugins/mint-message'
 
 import fastclick from 'fastclick'
 
@@ -9,23 +9,25 @@ import normalize from '../node_modules/normalize.css/normalize.css'
 import 'mint-ui/lib/style.css'
 import mainCss from './styles/main.scss'
 
-import routes from './router/router'
+import router from './router'
+import store from './vuex/store'
 
 import App from './App'
 
 // 开启fastclick
 fastclick.attach(document.body);
 
-Vue.use(VueRouter)
 Vue.use(Mint)
+Vue.use(MintMessage)
 
-const router = new VueRouter({
-  routes
+router.afterEach((route) => {
+  document.title = route.name
 })
 
 const app = new Vue({
   el: '#app',
   router,
+  store,
   render: c => c(App)
 })
 

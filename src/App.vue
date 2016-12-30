@@ -1,21 +1,31 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition :name="animationType">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
-// import Hello from './components/Hello'
 
 export default {
   name: 'app',
   components: {
+  },
+  data() {
+    return {
+      animationType: 'slide'
+    }
+  },
+
+  mounted() {
   }
 }
 </script>
 
 <style>
 #app {
+  position: relative;
   width: 100%;
   height: 100%;
 }

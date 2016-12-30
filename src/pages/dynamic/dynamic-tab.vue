@@ -3,7 +3,7 @@
 
 <template lang="html">
   <div class="page page--navbar">
-    <dynamic-item v-for="n in 3"></dynamic-item>
+    <dynamic-item v-for="n in 3" @click.native="test"></dynamic-item>
   </div>
 </template>
 
@@ -18,7 +18,12 @@ export default {
   },
 
   mounted() {
-    
+
+  },
+
+  methods: {
+    test() {
+    }
   }
 }
 </script>
