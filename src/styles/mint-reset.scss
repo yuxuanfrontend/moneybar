@@ -24,3 +24,7 @@
 .mint-navbar.is-fixed{
   position: absolute;
 }
+.mint-radio-core::after{
+  top:6px;
+  left: 6px;
+}

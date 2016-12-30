@@ -22,7 +22,7 @@
     width: 80%;
   }
   &__num img{
-    width: px2rem(24)
+    width: px2rem(20);
   }
   &__info{
     display: flex;
@@ -30,6 +30,7 @@
   }
   &__name{
     color: $color-333;
+    font-size: 16px;
   }
   &__name,&__bar{
     display: flex;
@@ -39,13 +40,13 @@
     color: $color-gray;
   }
   &__bar img{
-    width: px2rem(24);
+    width: px2rem(20);
   }
   &__txt{
     margin-top: px2rem(5);
     font-size: 14px;
     line-height: px2rem(20);
-    color: $color-gray;
+    color: $color-666;
   }
 }
 </style>
@@ -90,7 +91,6 @@ export default {
   },
   methods:{
     teamdetails(index){
-      console.log(index)
       this.$router.push('teamdetails')
     }
   }

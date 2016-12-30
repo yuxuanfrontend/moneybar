@@ -10,9 +10,10 @@
     position: relative;
     padding:px2rem(10) px2rem(15);
     background: $background-white;
+    border-bottom: 1px solid #eeeeee;
   }
   &__logo{
-    width: 18%;
+    width: 15%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,15 +22,16 @@
     width:80%;
   }
   &__title{
-    width: 80%;
+    width: 85%;
     line-height: px2rem(28);
+    font-size: 16px;
   }
   &__info{
-    width: 82%;
+    width: 85%;
     padding: 0 px2rem(5);
   }
   &__bar{
-    width: 80%;
+    width: 70%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -37,8 +39,8 @@
     font-size: 14px;
   }
   &__bar img{
-    width:px2rem(24);
-    height: px2rem(24);
+    width:px2rem(20);
+    height: px2rem(20);
   }
 
 }
@@ -85,7 +87,6 @@ export default {
   },
   methods:{
     teamIntro(){
-      console.log(10)
       this.$router.push('teamIntro')
     }
   }

@@ -15,13 +15,13 @@
     border-bottom:1px solid #eeeeee;
     justify-content: space-between;
     display: flex;
-    color: #333;
+    color: $color-333;
   }
   &__bd{
     line-height: 28px;
   }
   &__title{
-    color: #333;
+    color: $color-333;
     font-size: 16px;
   }
   &__subject{
@@ -42,6 +42,7 @@
     padding: px2rem(10) 0;
     font-size: 16px;
     line-height: px2rem(28);
+    color:  $color-666;
   }
   &__list{
     border-bottom:1px solid #eeeeee;
@@ -65,7 +66,7 @@
     color: $color-gray;
   }
   &__img{
-    width: px2rem(24);
+    width: px2rem(20);
   }
 }
 </style>
