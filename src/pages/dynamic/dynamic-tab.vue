@@ -3,7 +3,7 @@
 
 <template lang="html">
   <div class="page page--navbar">
-    <dynamic-item v-for="n in 3" @click.native="test"></dynamic-item>
+    <dynamic-item v-for="n in 3" v-on:click.native="dynamicdetails"></dynamic-item>
   </div>
 </template>
 
@@ -21,8 +21,9 @@ export default {
 
   },
 
-  methods: {
-    test() {
+  methods:{
+    dynamicdetails(){
+      this.$router.push('dynamicdetails')
     }
   }
 }

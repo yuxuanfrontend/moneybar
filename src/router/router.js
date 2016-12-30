@@ -7,6 +7,8 @@ import topiclist from '../pages/topic/topic-list'
 import teamTab from '../pages/team/team-tab'
 import teamdetails from '../pages/team/team-details'
 import teamintro from '../pages/team/team-intro'
+import dynamicdetails from '../pages/common/dynamic-details'
+import report from '../pages/common/report'
 
 import personal from '../pages/personal/personal'
 
@@ -52,7 +54,14 @@ module.exports = [
       }
     ]
   },
-
+  {
+    path:'/dynamicdetails',
+    component:dynamicdetails
+  },
+  {
+    path:'/report',
+    component:report
+  },
   {
     path:'/topiclist',
     component:topiclist

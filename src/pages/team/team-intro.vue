@@ -8,23 +8,31 @@
     justify-content: space-between;
     padding: px2rem(10) px2rem(15);
     background: $background-white;
+    border-bottom: 1px solid #eeeeee;
   }
+
   &__logo{
     display: flex;
-    width: 18%;
+    width: 15%;
     justify-content:center;
     align-items: center;
   }
+
+  &__userimg img,
   &__logo img{
     width: 80%;
   }
+
   &__title{
     line-height: px2rem(28);
+    font-size: 16px;
   }
+
   &__info{
-    width: 82%;
+    width: 85%;
     padding:0 px2rem(5);
   }
+
   &__bar{
     display: flex;
     justify-content: flex-start;
@@ -32,21 +40,50 @@
     color: $color-gray;
     font-size: 14px;
   }
+
   &__bar img{
-    width: px2rem(24);
-    height: px2rem(24);
+    width: px2rem(20);
+    height: px2rem(20);
     margin: 0 px2rem(5);
   }
+
   &__manager,&__profile{
     display: flex;
     justify-content: space-between;
     margin-top:px2rem(10);
     padding:px2rem(10) px2rem(15);
     background: $background-white;
+    color:$color-666;
   }
+
   &__subtitle{
-    width: px2rem(120);
+    width:15%;
+    display: flex;
+    font-size: 14px;
+    line-height: px2rem(22);
   }
+
+  &__person,
+  &__txt{
+    width:85%;
+    font-size: 14px;
+    line-height: px2rem(22);
+  }
+
+  &__userimg,
+  &__username{
+    display:block;
+    width:18%;
+    text-align:center;
+  }
+
+  &__userimg{
+    height: px2rem(40);
+  }
+  &__userimg img{
+    width: px3rem(30);
+  }
+
 }
 
 </style>
@@ -74,8 +111,12 @@
           管理员
         </div>
         <div class="team-intro__person">
-          <img src="" alt="">
-          <p>{{username}}</p>
+          <div class="team-intro__userimg">
+            <img src="../../assets/iconfont-yonghu.png" alt="">
+          </div>
+          <div class="team-intro__username">
+            {{username}}
+          </div>
         </div>
       </div>
       <div class="team-intro__profile">

@@ -4,16 +4,24 @@
 
 .dynamic-box {
   background-color: $background-white;
-  padding: px2rem(10);
+  padding: px2rem(15);
   margin-bottom: px2rem(10);
 
   &__head, &__body {
     margin-bottom: px2rem(10);
+    color: $color-333;
+  }
+
+  &__content{
+    color: $color-666;
+    font-size: 16px;
+    line-height: px2rem(22);
   }
 
   &__foot {
     display: flex;
     font-size: 14px;
+    color: $color-gray;
   }
 
   &__info, &__statistic {
@@ -36,7 +44,8 @@
   }
 
   &__title {
-    margin: px2rem(4) 0;
+    margin: px2rem(6) 0;
+    color: $color-333;
   }
 }
 </style>
