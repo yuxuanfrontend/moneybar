@@ -12,13 +12,14 @@
     width: 20%;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
   &__bd{
     width: 80%;
     padding: 0 px2rem(5);
   }
   &__logo img{
-    width: 100%;
+    width: 80%;
   }
   &__num img{
     width: px2rem(24)
@@ -50,7 +51,7 @@
 </style>
 
 <template lang="html">
-  <div class="team-box">
+  <div class="page page--navbar">
     <div class="team-list" v-for="(team,index) in teams" @click="teamdetails(index)">
       <div class="team-list__logo">
         <img src="../../assets/logo.png" alt="">
