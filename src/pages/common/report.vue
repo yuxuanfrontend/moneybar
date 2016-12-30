@@ -27,7 +27,7 @@ export default {
       options : [
         { label: '政治因素', value: '值A'},
         { label: '色情低俗内容', value: '值B' },
-        { label: '有道欺骗，诈骗', value: '值C' },
+        { label: '诱导欺骗，诈骗', value: '值C' },
         { label: '其他', value: '值D' }
       ]
     }

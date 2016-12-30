@@ -115,6 +115,15 @@
       width: px2rem(24)
     }
   }
+  &__class{
+    display: flex;
+    justify-content: space-between;
+    background: $background-gray;
+    font-size: 16px;
+    color: $color-333;
+    padding: px2rem(10) px2rem(15);
+    position: relative;
+  }
 
 }
 
@@ -123,6 +132,10 @@
 <template lang="html">
   <div class="page">
     <div class="dynamic-details">
+      <div class="dynamic-details__class">
+        <div>  {{ (1 === 2) ? topictitle : ('来自小组 '+ teamtitle) }} </div>
+        <div class="mint-cell-allow-right"> </div>
+      </div>
       <div class="dynamic-details__username">
         <div> <img src="../../assets/iconfont-yonghu.png" alt="">{{ username }} </div>
         <div class="dynamic-details__date"> {{ date }} </div>
@@ -155,6 +168,8 @@
 export default {
   data () {
     return {
+      topictitle:'#话题# 说说你收藏了哪些壹分',
+      teamtitle:' 有油壹分小组',
       username:'李学轩',
       commentname:'李福振',
       date:'12.12',
