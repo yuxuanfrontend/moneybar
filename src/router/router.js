@@ -56,24 +56,29 @@ module.exports = [
   },
   {
     path:'/dynamicdetails',
+    name:'动态详情',
     component:dynamicdetails
   },
   {
     path:'/report',
+    name:'举报',
     component:report
   },
   {
     path:'/topiclist',
+    name:'话题列表',
     component:topiclist
   },
 
   {
     path:'/teamdetails',
+    name:'小组详情',
     component:teamdetails
   },
 
   {
     path:'/teamintro',
+    name:'小组介绍',
     component:teamintro
   },
 
