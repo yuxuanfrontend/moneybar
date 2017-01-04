@@ -1,4 +1,4 @@
-<style lang="scss">
+<style lang="scss" scroped>
 @import "../styles/px2rem.scss";
 @import "../styles/colors.scss";
 
@@ -34,6 +34,10 @@
     div {
       margin-right: px2rem(6);
     }
+
+    img {
+      vertical-align: middle;
+    }
   }
 
   &__statistic {
@@ -46,6 +50,14 @@
   &__title {
     margin: px2rem(6) 0;
     color: $color-333;
+  }
+
+  &__content {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 </style>

@@ -50,6 +50,10 @@ input {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+textarea {
+  resize: none;
+}
+
 .vl-icon {
   vertical-align: middle;
 }
@@ -105,4 +109,16 @@ input {
 .slide-back-leave-active {
   transform: translateX(100%);
   transition: transform .3s ease;
+}
+
+
+.scroll-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: px2rem(30);
+
+  &__spinner {
+    margin-right: px2rem(10);
+  }
 }

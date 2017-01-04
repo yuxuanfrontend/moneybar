@@ -12,6 +12,8 @@ import report from '../pages/common/report'
 
 import personal from '../pages/personal/personal'
 
+import publish from '../pages/publish/publish'
+
 // import foo from fooPath
 // import bar from '../components/bar'
 // import quotation from '../components/quotation'
@@ -81,6 +83,12 @@ module.exports = [
     path: '/personal',
     name: '个人中心',
     component: personal
+  },
+
+  {
+    path: '/publish',
+    name: '发表',
+    component: publish
   }
 
 ];
