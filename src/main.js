@@ -5,7 +5,7 @@ import MintMessage from './plugins/mint-message'
 import fastclick from 'fastclick'
 
 import normalize from '../node_modules/normalize.css/normalize.css'
-// import weui from 'weui'
+import weui from 'weui'
 import 'mint-ui/lib/style.css'
 import mainCss from './styles/main.scss'
 
