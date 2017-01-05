@@ -1,4 +1,4 @@
-<style lang="scss" scroped>
+<style lang="scss" scoped>
 @import "../styles/px2rem.scss";
 @import "../styles/colors.scss";
 
