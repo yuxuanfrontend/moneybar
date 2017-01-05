@@ -12,7 +12,7 @@
 
 <template lang="html">
   <div class="page">
-    <mt-navbar v-model="selected" :fixed="true">
+    <mt-navbar class="pdright" v-model="selected" :fixed="true">
       <mt-tab-item id="1">动态</mt-tab-item>
       <mt-tab-item id="2">话题</mt-tab-item>
       <mt-tab-item id="3">小组</mt-tab-item>

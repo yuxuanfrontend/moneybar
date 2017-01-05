@@ -3,6 +3,7 @@
 @import "../../styles/px2rem.scss";
 
 .dynamic-details{
+  padding-bottom:px2rem(80);
 
   &__username{
     padding:px2rem(10) px2rem(15);
@@ -61,13 +62,16 @@
   &__input{
     display: flex;
     justify-content: space-between;
+    width:90%;
     background: $background-white;
-    padding: px2rem(15);
-    margin-top: px2rem(10);
+    padding:px2rem(15) 5%;
+    position:absolute;
+    bottom: 0;
+    z-index: 1000;
 
     input{
       width: 80%;
-      line-height: px2rem(32);
+      line-height: px2rem(18);
       height: px2rem(32);
       box-sizing: border-box;
       border: 1px solid #eeeeee;
@@ -75,15 +79,17 @@
       text-indent: px2rem(5);
       outline: none;
       border-radius: 0;
+      color:$color-333;
+      font-family: "微软雅黑";
     }
-    button{
-      border: none;
+    div{
       background: #26a2ff;
       color: $color-white;
       height: px2rem(32);
-      width: 20%;
+      line-height:  px2rem(32);
+      width:20%;
       font-size: 14px;
-      outline: none;
+      text-align: center;
     }
   }
   &__commentbox{
@@ -94,6 +100,7 @@
     margin-top: px2rem(10);
   }
   &__commentbd{
+    width:100%;
   }
   &__commentname{
     display: flex;
@@ -131,8 +138,8 @@
 
 <template lang="html">
   <div class="page">
-    <div class="dynamic-details">
-      <div class="dynamic-details__class">
+    <div class="dynamic-details page">
+      <div class="dynamic-details__class" >
         <div>  {{ (1 === 2) ? topictitle : ('来自小组 '+ teamtitle) }} </div>
         <div class="mint-cell-allow-right"> </div>
       </div>
@@ -145,21 +152,22 @@
         <div class="dynamic-details__txt"> {{ container }} </div>
         <div class="dynamic-details__foot"><div>阅读{{ }}评论{{ }}</div><div @click="report">举报 </div> </div>
       </div>
-      <div class="dynamic-details__no">暂时还没有评论，发表第一条评论吧 </div>
-      <div class="dynamic-details__commentbox">
+      <div class="dynamic-details__no" v-show="comments.length === 0">暂时还没有评论，发表第一条评论吧 </div>
+      <div class="dynamic-details__commentbox" v-for="comment in comments" v-on:click="clickcomment(comment)">
         <div class="dynamic-details__commentbd">
           <div class="dynamic-details__commentname">
-            <div>{{ newcommentname }} {{ commentname && (' 回复 ' + commentname) }} </div>
-            <div> {{ commentdate }} </div>
+            <div>{{ comment.newcommentname }} {{ comment.commentname && (' 回复 ' + comment.commentname) }} </div>
+            <div> {{ comment.commentdate }} </div>
           </div>
-          <div class="dynamic-details__commentxt">{{commentxt}}</div>
           <div class="dynamic-details__commenting"><img src="../../assets/comment.png" alt=""></div>
+          <div class="dynamic-details__commentxt">{{comment.commentxt}}</div>
+          <div class=""> </div>
         </div>
       </div>
-      <div class="dynamic-details__input">
-        <input type="text" name="" value="" placeholder="点评一下吧...">
-        <button>发送</button>
-      </div>
+    </div>
+    <div class="dynamic-details__input">
+      <input type="text" name="" value="" :placeholder="inputPlaceholder" v-model="comment" ref="sendInput">
+      <div @click="sendout" >发送</div>
     </div>
   </div>
 </template>
@@ -170,19 +178,38 @@ export default {
     return {
       topictitle:'#话题# 说说你收藏了哪些壹分',
       teamtitle:' 有油壹分小组',
-      username:'李学轩',
-      commentname:'李福振',
-      date:'12.12',
-      newcommentname:'潘青青',
-      commentdate:'13.12',
-      commentxt:'散户是什么意思？求教！！！帮帮帮散户是什么意思？求教！！！帮帮帮',
       title:'一位散户高手的炒股心得',
-      container:'炒股心得（1）为什么散户不会赚钱？1、炒股是资源的再分配，并不是创造财富。2、开办股市就是为了圈钱，不给你一点甜头你怎么会拿钱去投资呢？2、开办股市就是为了圈钱，不给你一点甜头你怎么会拿钱去投资呢？不给你一'
+      container:'炒股心得（1）为什么散户不会赚钱？1、炒股是资源的再分配，并不是创造财富。2、开办股市就是为了圈钱，不给你一点甜头你怎么会拿钱去投资呢？2、开办股市就是为了圈钱，不给你一点甜头你怎么会拿钱去投资呢？不给你一',
+      username:'李学轩',
+      date:'12.12',
+      inputPlaceholder:'回复 李学轩',
+      comments:[
+        // {commentname:'李福振',newcommentname:'潘青青',commentdate:'13.12',commentxt:'散户是什么意思？求教！！！帮帮帮散户是什么意思？求教！！！帮帮帮'}
+      ]
     }
   },
   methods:{
     report(){
       this.$router.push('report')
+    },
+    sendout(){
+      if(this.comment === '' || this.comment === undefined){
+        return false
+      }else{
+        this.comments.push({commentname:'李福振',newcommentname:'潘青青',commentdate:'13.12',commentxt:this.comment})
+        this.comment = ''
+      }
+
+    },
+    clickcomment(comment){
+      // let event = window.document.createEvent('HTMLEvents')
+      // event.initEvent('focus', true, false)
+      //
+      // console.log()
+      // this.$refs.sendInput.dispatchEvent(event)
+      this.$refs.sendInput.focus()
+      this.inputPlaceholder = ''
+      this.inputPlaceholder = '回复 '+comment.newcommentname
     }
   }
 }

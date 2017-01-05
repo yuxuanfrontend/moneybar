@@ -2,7 +2,7 @@
 </style>
 <template lang="html">
   <div class="topic-list">
-    <mt-cell title="标题" :label="labeltxt" is-link></mt-cell>
+    <mt-cell title="标题" :label="labeltxt" is-link to="topicdetails"></mt-cell>
   </div>
 </template>
 

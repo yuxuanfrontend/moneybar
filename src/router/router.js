@@ -4,6 +4,7 @@ import mainTab from '../pages/main-tab'
 import dynamiTab from '../pages/dynamic/dynamic-tab'
 import topicTab from '../pages/topic/topic-tab'
 import topiclist from '../pages/topic/topic-list'
+import topicdetails from '../pages/topic/topic-details'
 import teamTab from '../pages/team/team-tab'
 import teamdetails from '../pages/team/team-details'
 import teamintro from '../pages/team/team-intro'
@@ -11,6 +12,9 @@ import dynamicdetails from '../pages/common/dynamic-details'
 import report from '../pages/common/report'
 
 import personal from '../pages/personal/personal'
+import mypublish from '../pages/personal/my-publish'
+import personalinfo from '../pages/personal/personal-info'
+import myheard from '../pages/personal/my-heard'
 
 // import foo from fooPath
 // import bar from '../components/bar'
@@ -71,6 +75,12 @@ module.exports = [
   },
 
   {
+    path:'/topicdetails',
+    name:'话题详情',
+    component:topicdetails
+  },
+
+  {
     path:'/teamdetails',
     name:'小组详情',
     component:teamdetails
@@ -86,6 +96,24 @@ module.exports = [
     path: '/personal',
     name: '个人中心',
     component: personal
+  },
+
+  {
+    path:'/mypublish',
+    name:'发表',
+    component:mypublish
+  },
+
+  {
+    path:'/personalinfo',
+    name:'个人设置',
+    component:personalinfo
+  },
+
+  {
+      path:'/myheard',
+      name:'我的消息',
+      component:myheard
   }
 
 ];

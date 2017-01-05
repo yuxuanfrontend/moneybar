@@ -70,18 +70,9 @@
   }
 }
 </style>
-
 <template lang="html">
-  <div class="page page--navbar">
-    <div class="topic-tab">
-      <div class="topic-tab__hd">
-        <div class="topic-tab__subject">
-          新鲜话题
-        </div>
-        <div class="topic-tab__more" v-on:click="topicmore">
-          更多
-        </div>
-      </div>
+  <div class="page">
+    <div class="topic-details">
       <div class="topic-tab__bd">
         <div class="topic-tab__title">
           话题标题

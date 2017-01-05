@@ -14,7 +14,7 @@
     <div class="reportbox">
       <mt-radio title="举报列表" v-model="value" :options="options"> </mt-radio>
       <div class="reportbox__btn">
-        <mt-button type="primary" size="large">提交</mt-button>
+        <mt-button type="primary" size="large" @click="Toast">提交</mt-button>
       </div>
     </div>
   </div>
@@ -30,6 +30,10 @@ export default {
         { label: '诱导欺骗，诈骗', value: '值C' },
         { label: '其他', value: '值D' }
       ]
+    }
+  },
+  methods:{
+    Toast(){
     }
   }
 }
