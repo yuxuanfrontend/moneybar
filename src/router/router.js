@@ -16,6 +16,8 @@ import mypublish from '../pages/personal/my-publish'
 import personalinfo from '../pages/personal/personal-info'
 import myheard from '../pages/personal/my-heard'
 
+import publish from '../pages/publish/publish'
+
 // import foo from fooPath
 // import bar from '../components/bar'
 // import quotation from '../components/quotation'
@@ -100,7 +102,7 @@ module.exports = [
 
   {
     path:'/mypublish',
-    name:'发表',
+    name:'我的发表',
     component:mypublish
   },
 
@@ -111,9 +113,15 @@ module.exports = [
   },
 
   {
-      path:'/myheard',
-      name:'我的消息',
-      component:myheard
+    path:'/myheard',
+    name:'我的消息',
+    component:myheard
+  },
+
+  {
+    path: '/publish',
+    name: '发表',
+    component: publish
   }
 
 ];
