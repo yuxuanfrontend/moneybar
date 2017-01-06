@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Mint from 'mint-ui'
 import MintMessage from './plugins/mint-message'
+import Superagent from './plugins/vue-superagent'
 
 import fastclick from 'fastclick'
 
@@ -19,6 +20,7 @@ fastclick.attach(document.body);
 
 Vue.use(Mint)
 Vue.use(MintMessage)
+Vue.use(Superagent)
 
 router.afterEach((route) => {
   document.title = route.name

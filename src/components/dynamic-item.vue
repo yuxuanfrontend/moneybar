@@ -1,4 +1,4 @@
-<style lang="scss" scoped>
+<style lang="scss" scroped>
 @import "../styles/px2rem.scss";
 @import "../styles/colors.scss";
 
@@ -59,12 +59,23 @@
     text-overflow: ellipsis;
     overflow: hidden;
   }
+
+  &__topic {
+    color: $color-orange;
+  }
+
+  &__team {
+    color: $color-orange;
+  }
 }
 </style>
 
 <template lang="html">
   <div class="dynamic-box">
-    <div class="dynamic-box__head">6006003 这个怎么样</div>
+    <div class="dynamic-box__head">
+      <div class="dynamic-box__topic" v-if="data.type===2">#话题#{{data.topic}}</div>
+      <div v-if="data.type===3">来自<span class="dynamic-box__team">{{data.teamName}}</span></div>
+    </div>
     <div class="dynamic-box__body">
       <div class="dynamic-box__title">{{data.title}}</div>
       <div class="dynamic-box__img"><horizon-images :images="data.images"></horizon-images></div>
@@ -100,7 +111,9 @@ export default {
     data: {
       default() {
         return {
-          type: 1,
+          type: 3,
+          topic: '这是一个话题',
+          teamName: '小组1',
           title: '这是标题',
           content: '这是内容。。。内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
           images: [logo, logo, logo, logo, logo],

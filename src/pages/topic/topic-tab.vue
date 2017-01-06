@@ -128,7 +128,7 @@ export default {
   },
   methods:{
     topicmore(){
-      this.$router.push('topiclist')
+      this.$router.push('/topiclist')
     }
   }
 }

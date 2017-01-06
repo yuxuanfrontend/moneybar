@@ -42,13 +42,13 @@ export default {
   methods: {
     switchTab() {
       switch (this.$route.path) {
-        case '/dynamic':
+        case '/main-tab/dynamic':
           this.selected = '1'
           break;
-        case '/topic':
+        case '/main-tab/topic':
           this.selected = '2'
           break;
-        case '/team':
+        case '/main-tab/team':
           this.selected = '3'
           break;
       }
@@ -63,13 +63,13 @@ export default {
     selected(newVal) {
       switch (newVal) {
         case '1':
-          this.$router.push('/dynamic')
+          this.$router.push('/main-tab/dynamic')
           break;
         case '2':
-          this.$router.push('/topic')
+          this.$router.push('/main-tab/topic')
           break;
         case '3':
-          this.$router.push('/team')
+          this.$router.push('/main-tab/team')
           break;
       }
     },

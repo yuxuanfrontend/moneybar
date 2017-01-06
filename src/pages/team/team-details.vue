@@ -69,26 +69,33 @@
     </div>
     <div class="team-detai__bd">
       <div class="">
-
+        <dynamic-item v-for="dynamic in dynamics"></dynamic-item>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
+import dynamicItem from '../../components/dynamic-item'
+
 export default {
   data () {
     return {
       teamname:'油一分小组',
       username:'李学轩',
       number:100,
-      commentnum:100
+      commentnum:100,
+      dynamics: [{},{},{}]
     }
   },
   methods:{
     teamIntro(){
       this.$router.push('teamIntro')
     }
+  },
+  components: {
+    dynamicItem
   }
 }
 </script>

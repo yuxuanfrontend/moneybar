@@ -1,4 +1,4 @@
-// const fooPath = components'/foo'
+import home from '../pages/home'
 import mainTab from '../pages/main-tab'
 
 import dynamiTab from '../pages/dynamic/dynamic-tab'
@@ -18,27 +18,14 @@ import myheard from '../pages/personal/my-heard'
 
 import publish from '../pages/publish/publish'
 
-// import foo from fooPath
-// import bar from '../components/bar'
-// import quotation from '../components/quotation'
-// import applyGoods from '../components/applyGoods'
-// import transfer from '../components/transfer'
-// import personal from '../components/personal'
-
-// import login from '../pages/identity/login'
-// import register from '../pages/identity/register'
-// import registerStep1 from '../pages/identity/register-step1'
-// import registerStep2 from '../pages/identity/register-step2'
-//
-// import mainView from '../pages/main-view'
-// import quotationList from '../pages/quotation/quotation-list'
-//
-// import quotation from '../pages/quotation/quotation-highstock'
-
-
 module.exports = [
   {
     path: '/',
+    component: home
+  },
+
+  {
+    path: '/main-tab',
     component: mainTab,
     children: [
       {
@@ -48,13 +35,13 @@ module.exports = [
       },
 
       {
-        path: '/topic',
+        path: 'topic',
         name: '话题',
         component: topicTab
       },
 
       {
-        path: '/team',
+        path: 'team',
         name: '小组',
         component: teamTab
       }
@@ -83,7 +70,7 @@ module.exports = [
   },
 
   {
-    path:'/teamdetails',
+    path:'/teamdetails/:id',
     name:'小组详情',
     component:teamdetails
   },

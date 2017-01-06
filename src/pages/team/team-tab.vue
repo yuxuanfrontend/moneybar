@@ -53,7 +53,7 @@
 
 <template lang="html">
   <div class="page page--navbar">
-    <div class="team-list" v-for="(team,index) in teams" @click="teamdetails(index)">
+    <div class="team-list" v-for="(team,index) in teams" @click="teamdetails(team)">
       <div class="team-list__logo">
         <img src="../../assets/logo.png" alt="">
       </div>
@@ -83,15 +83,15 @@ export default {
   data () {
     return {
       teams:[
-        {number:100, teamname:'纪念币小组', teamtxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', commentnum:100},
-        {number:100, teamname:'纪念币小组', teamtxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', commentnum:100},
-        {number:100, teamname:'纪念币小组', teamtxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', commentnum:100}
+        {id: 1,number:100, teamname:'纪念币小组', teamtxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', commentnum:100},
+        {id: 2,number:100, teamname:'纪念币小组', teamtxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', commentnum:100},
+        {id: 3,number:100, teamname:'纪念币小组', teamtxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', commentnum:100}
       ]
     }
   },
   methods:{
-    teamdetails(index){
-      this.$router.push('teamdetails')
+    teamdetails(team){
+      this.$router.push('/teamdetails/' + team.id)
     }
   }
 }

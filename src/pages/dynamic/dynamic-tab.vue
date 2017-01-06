@@ -39,11 +39,18 @@ export default {
   },
 
   mounted() {
+    this.$request.post('http://192.168.226.183:8083/wechat-inrpc/wechat/queryDynamic')
+      .send({
+        orderByCreateTimeDesc: 'true'
+      })
+      .then((res) => {
+        console.log(res);
+      })
   },
 
   methods:{
     dynamicdetails(){
-      this.$router.push('dynamicdetails')
+      this.$router.push('/dynamicdetails')
     },
 
     loadTop() {
@@ -61,7 +68,7 @@ export default {
     },
 
     goPublish() {
-      this.$router.push('publish')
+      this.$router.push('/publish')
     }
   }
 }

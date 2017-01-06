@@ -14,9 +14,9 @@
 
 <template lang="html">
   <div class="page">
-    <mt-field placeholder="请输入标题" v-model="title"></mt-field>
-    <mt-field placeholder="请输入内容" type="textarea" rows="10" v-model="content"></mt-field>
-    <div class="publish-uploader">
+    <mt-field placeholder="请输入标题" v-model="title" :attr="{maxlength:255}"></mt-field>
+    <mt-field placeholder="请输入内容" type="textarea" rows="10" v-model="content" :attr="{maxlength:4000}"></mt-field>
+    <!-- <div class="publish-uploader">
       <div class="weui-uploader">
         <div class="weui-uploader__hd">
           <p class="weui-uploader__title">图片上传</p>
@@ -32,11 +32,10 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div style="padding:10px;">
-      <mt-button type="primary" class="vl-right" @click.native="publish">发表</mt-button>
+      <mt-button type="primary" class="vl-right" :disabled="isPublishDisabled" @click.native="publish">发表</mt-button>
     </div>
-    <!-- <div class="vl-float-button"><img src="../../assets/edit.png" alt=""></div> -->
   </div>
 </template>
 
@@ -52,6 +51,12 @@ export default {
     }
   },
 
+  computed: {
+    isPublishDisabled() {
+      return this.title.trim() === '' || this.content.trim() === ''
+    }
+  },
+
   methods: {
     publish() {
       if (this.title.trim() === '' || this.content.trim() === '') {
@@ -60,7 +65,7 @@ export default {
       }
 
       this.$toast('发布成功')
-      this.$router.push('dynamic')
+      this.$router.push('/main-tab/dynamic')
     }
   }
 }
