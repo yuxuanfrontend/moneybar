@@ -139,8 +139,8 @@
 <template lang="html">
   <div class="page">
     <div class="dynamic-details page">
-      <div class="dynamic-details__class" >
-        <div>  {{ (1 === 2) ? topictitle : ('来自小组 '+ teamtitle) }} </div>
+      <div class="dynamic-details__class" v-show = "Number($route.params.id) != 1" v-on:click="entrylist">
+        <div> {{ ( Number($route.params.id) === 2 ) ? ('来自话题 '+ topictitle) : ('来自小组 '+ teamtitle) }} </div>
         <div class="mint-cell-allow-right"> </div>
       </div>
       <div class="dynamic-details__username">
@@ -159,8 +159,8 @@
             <div>{{ comment.newcommentname }} {{ comment.commentname && (' 回复 ' + comment.commentname) }} </div>
             <div> {{ comment.commentdate }} </div>
           </div>
-          <div class="dynamic-details__commenting"><img src="../../assets/comment.png" alt=""></div>
           <div class="dynamic-details__commentxt">{{comment.commentxt}}</div>
+          <div class="dynamic-details__commenting"><img src="../../assets/comment.png" alt=""></div>
           <div class=""> </div>
         </div>
       </div>
@@ -199,7 +199,14 @@ export default {
         this.comments.push({commentname:'李福振',newcommentname:'潘青青',commentdate:'13.12',commentxt:this.comment})
         this.comment = ''
       }
-
+    },
+    entrylist(){
+      console.log(this.$route.params.id)
+      if(Number(this.$route.params.id) === 2){
+        this.$router.push('/topicdetails')
+      }else if(Number(this.$route.params.id) === 3){
+        this.$router.push('/teamdetails')
+      }
     },
     clickcomment(comment){
       // let event = window.document.createEvent('HTMLEvents')

@@ -8,7 +8,7 @@
         <div v-infinite-scroll="loadMore"
         infinite-scroll-disabled="loading"
         infinite-scroll-distance="10">
-        <dynamic-item v-for="dynamic in dynamicDatas" v-on:click.native="dynamicdetails"></dynamic-item>
+        <dynamic-item v-for="dynamic in dynamicDatas" v-on:click.native="dynamicdetails(dynamic)"></dynamic-item>
       </div>
       <div class="scroll-loading">
         <mt-spinner class="scroll-loading__spinner" type="fading-circle" :size="20"></mt-spinner>
@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       allLoaded: false,
-      dynamicDatas: [{},{},{}]
+      dynamicDatas: [{id:1},{id:2},{id:3}]
     }
   },
 
@@ -49,8 +49,8 @@ export default {
   },
 
   methods:{
-    dynamicdetails(){
-      this.$router.push('/dynamicdetails')
+    dynamicdetails(dynamic){
+      this.$router.push('/dynamicdetails/'+dynamic.id)
     },
 
     loadTop() {

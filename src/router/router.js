@@ -48,7 +48,7 @@ module.exports = [
     ]
   },
   {
-    path:'/dynamicdetails',
+    path:'/dynamicdetails/:id',
     name:'动态详情',
     component:dynamicdetails
   },
