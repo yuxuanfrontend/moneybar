@@ -64,7 +64,7 @@ module.exports = [
   },
 
   {
-    path:'/topicdetails',
+    path:'/topicdetails/:id',
     name:'话题详情',
     component:topicdetails
   },

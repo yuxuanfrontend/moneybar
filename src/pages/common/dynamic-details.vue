@@ -150,7 +150,7 @@
       <div class="dynamic-details__bd">
         <div class="dynamic-details__title"> {{ title }} </div>
         <div class="dynamic-details__txt"> {{ container }} </div>
-        <div class="dynamic-details__foot"><div>阅读{{ }}评论{{ }}</div><div @click="report">举报 </div> </div>
+        <div class="dynamic-details__foot"><div>阅读 {{ readAmount }} 评论 {{ commentAmount }}</div><div @click="report">举报 </div> </div>
       </div>
       <div class="dynamic-details__no" v-show="comments.length === 0">暂时还没有评论，发表第一条评论吧 </div>
       <div class="dynamic-details__commentbox" v-for="comment in comments" v-on:click="clickcomment(comment)">
@@ -161,7 +161,6 @@
           </div>
           <div class="dynamic-details__commentxt">{{comment.commentxt}}</div>
           <div class="dynamic-details__commenting"><img src="../../assets/comment.png" alt=""></div>
-          <div class=""> </div>
         </div>
       </div>
     </div>
@@ -183,6 +182,8 @@ export default {
       username:'李学轩',
       date:'12.12',
       inputPlaceholder:'回复 李学轩',
+      readAmount: 1000,
+      commentAmount: 20,
       comments:[
         // {commentname:'李福振',newcommentname:'潘青青',commentdate:'13.12',commentxt:'散户是什么意思？求教！！！帮帮帮散户是什么意思？求教！！！帮帮帮'}
       ]
@@ -190,7 +191,7 @@ export default {
   },
   methods:{
     report(){
-      this.$router.push('report')
+      this.$router.push('/report')
     },
     sendout(){
       if(this.comment === '' || this.comment === undefined){
@@ -203,9 +204,9 @@ export default {
     entrylist(){
       console.log(this.$route.params.id)
       if(Number(this.$route.params.id) === 2){
-        this.$router.push('/topicdetails')
+        this.$router.push('/topicdetails/'+2)
       }else if(Number(this.$route.params.id) === 3){
-        this.$router.push('/teamdetails')
+        this.$router.push('/teamdetails/'+3)
       }
     },
     clickcomment(comment){
