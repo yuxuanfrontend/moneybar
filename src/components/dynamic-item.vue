@@ -67,6 +67,12 @@
   &__team {
     color: $color-orange;
   }
+
+  &__avator {
+    height:14px;
+    border-radius: 50%;
+    // border: 1px solid #222;
+  }
 }
 </style>
 
@@ -83,7 +89,7 @@
     </div>
     <div class="dynamic-box__foot">
       <div class="dynamic-box__info">
-        <div><img :src="data.avator" style="height:14px;border-radius: 50%;"></div>
+        <div><img class="dynamic-box__avator" :src="data.avator"></div>
         <div>{{data.nickname}}</div>
         <div>{{data.time}}</div>
       </div>

@@ -114,7 +114,7 @@
     color: $color-666;
     line-height: px2rem(20);
   }
-  &__commenting{
+  &__commentimg{
     display: flex;
     justify-content: flex-end;
     height: px2rem(24);
@@ -132,6 +132,11 @@
     position: relative;
   }
 
+}
+
+.dynamic-details-reply {
+  color: $color-666;
+  padding: px2rem(6) 0;
 }
 
 </style>
@@ -153,22 +158,32 @@
         <div class="dynamic-details__foot"><div>阅读{{ }}评论{{ }}</div><div @click="report">举报 </div> </div>
       </div>
       <div class="dynamic-details__no" v-show="comments.length === 0">暂时还没有评论，发表第一条评论吧 </div>
+
       <div class="dynamic-details__commentbox" v-for="comment in comments" v-on:click="clickcomment(comment)">
         <div class="dynamic-details__commentbd">
           <div class="dynamic-details__commentname">
-            <div>{{ comment.newcommentname }} {{ comment.commentname && (' 回复 ' + comment.commentname) }} </div>
+            <div>{{comment.commentname}} </div>
             <div> {{ comment.commentdate }} </div>
           </div>
-          <div class="dynamic-details__commentxt">{{comment.commentxt}}</div>
-          <div class="dynamic-details__commenting"><img src="../../assets/comment.png" alt=""></div>
-          <div class=""> </div>
+          <div class="dynamic-details__commentxt" @click="replySheetVisible = true">{{comment.commentxt}}</div>
+          <div class="dynamic-details__commentimg"><img src="../../assets/comment.png" alt="">3</div>
+          <div class="dynamic-details-reply vl-font-smaller" v-if="comment.replies" v-for="reply in comment.replies" @click="replySheetVisible = true">
+            <span class="dynamic-details-reply__head">{{reply.name}}{{reply.targetName && (' 回复 ' + reply.targetName)}}:</span>
+            <span class="dynamic-details-reply__body">{{reply.content}}</span>
+          </div>
         </div>
       </div>
+
     </div>
     <div class="dynamic-details__input">
       <input type="text" name="" value="" :placeholder="inputPlaceholder" v-model="comment" ref="sendInput">
       <div @click="sendout" >发送</div>
     </div>
+
+    <mt-actionsheet
+      :actions="replyActions"
+      v-model="replySheetVisible">
+    </mt-actionsheet>
   </div>
 </template>
 
@@ -176,21 +191,35 @@
 export default {
   data () {
     return {
+      replyActions: [
+        {name: '回复', method() {}},
+        {name: '举报', method() {}},
+      ],
+      replySheetVisible: false,
       topictitle:'#话题# 说说你收藏了哪些壹分',
       teamtitle:' 有油壹分小组',
       title:'一位散户高手的炒股心得',
       container:'炒股心得（1）为什么散户不会赚钱？1、炒股是资源的再分配，并不是创造财富。2、开办股市就是为了圈钱，不给你一点甜头你怎么会拿钱去投资呢？2、开办股市就是为了圈钱，不给你一点甜头你怎么会拿钱去投资呢？不给你一',
-      username:'李学轩',
+      username:'林二',
       date:'12.12',
       inputPlaceholder:'回复 李学轩',
       comments:[
-        // {commentname:'李福振',newcommentname:'潘青青',commentdate:'13.12',commentxt:'散户是什么意思？求教！！！帮帮帮散户是什么意思？求教！！！帮帮帮'}
+        {
+          commentname:'赵四',newcommentname:'潘青青',commentdate:'13.12',commentxt:'散户是什么意思？求教！！！帮帮帮散户是什么意思？求教！！！帮帮帮',
+          replies: [
+            {
+              name: '王三',
+              targetName: '赵四',
+              content: '回复你回复你回复你回复你回复你回复你回复你回复你回复你回复你回复你回复你回复你'
+            }
+          ]
+        }
       ]
     }
   },
   methods:{
     report(){
-      this.$router.push('report')
+      this.$router.push('/report')
     },
     sendout(){
       if(this.comment === '' || this.comment === undefined){

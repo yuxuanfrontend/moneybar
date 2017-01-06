@@ -1,3 +1,3 @@
 export default {
-  domain: 'http://192.168.226.183:8080'
+  domain: 'http://192.168.234.19:8083'
 }

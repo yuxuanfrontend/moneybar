@@ -14,7 +14,7 @@
     <div class="reportbox">
       <mt-radio title="举报列表" v-model="value" :options="options"> </mt-radio>
       <div class="reportbox__btn">
-        <mt-button type="primary" size="large" @click="Toast">提交</mt-button>
+        <mt-button type="primary" size="large" @click="submit">提交</mt-button>
       </div>
     </div>
   </div>
@@ -33,7 +33,9 @@ export default {
     }
   },
   methods:{
-    Toast(){
+    submit(){
+      this.$toast('举报成功')
+      this.$router.back()
     }
   }
 }

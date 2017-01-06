@@ -30,3 +30,7 @@ body {
     font-size: 480*$bodyFontSize/375;
   }
 }
+
+.vl-font-smaller {
+  font-size: $bodyFontSize * 0.875;
+}
