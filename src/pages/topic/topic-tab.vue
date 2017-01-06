@@ -19,6 +19,7 @@
   }
   &__bd{
     line-height: 28px;
+    margin-bottom: px2rem(10);
   }
   &__title{
     color: $color-333;
@@ -90,7 +91,8 @@
           {{ post }}篇帖子 · {{ partIn }}人参与讨论
         </div>
       </div>
-      <div class="topic-tab__comment">
+        <dynamic-item v-for="dynamic in dynamicDatas" v-on:click.native="dynamicdetails(dynamic)"></dynamic-item>
+      <!-- <div class="topic-tab__comment">
         <div class="topic-tab__list" v-for="comment in commentList">
           <div class="topic-tab__text">
             {{ comment.container }}
@@ -109,12 +111,13 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
+import dynamicItem from '../../components/dynamic-item'
 export default {
   data () {
     return {
@@ -123,12 +126,19 @@ export default {
       commentList:[
         {container:'这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是',
          username:'用户昵称',date:'12.10',pageview:'1000',commentnum:'8'}
-      ]
+      ],
+      dynamicDatas: [{id:1},{id:2},{id:3}]
     }
+  },
+  components: {
+    dynamicItem,
   },
   methods:{
     topicmore(){
       this.$router.push('/topiclist')
+    },
+    dynamicdetails(dynamic){
+      this.$router.push('/dynamicdetails/'+dynamic.id)
     }
   }
 }

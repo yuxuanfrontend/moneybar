@@ -5,9 +5,7 @@
   <div class="page">
     <div class="page page--navbar">
       <mt-loadmore :top-method="loadTop" ref="loadmore">
-        <div v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="loading"
-        infinite-scroll-distance="10">
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
         <dynamic-item v-for="dynamic in dynamicDatas" v-on:click.native="dynamicdetails(dynamic)"></dynamic-item>
       </div>
       <div class="scroll-loading">

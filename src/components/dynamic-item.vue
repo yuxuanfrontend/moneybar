@@ -20,6 +20,7 @@
 
   &__foot {
     display: flex;
+    align-items: center;
     font-size: 14px;
     color: $color-gray;
   }
@@ -42,8 +43,14 @@
 
   &__statistic {
 
+
     div {
+      display: flex;
+      align-items: center;
       margin-left: px2rem(6);
+      img{
+        margin-right: px2rem(5);
+      }
     }
   }
 
@@ -73,6 +80,10 @@
     border-radius: 50%;
     // border: 1px solid #222;
   }
+
+  &__icon{
+    width: px2rem(20);
+  }
 }
 </style>
 
@@ -94,8 +105,8 @@
         <div>{{data.time}}</div>
       </div>
       <div class="dynamic-box__statistic">
-        <div>{{data.readAmount}}</div>
-        <div>{{data.commentAmount}}</div>
+        <div><img class="dynamic-box__icon" src="../assets/pageview.png" alt="">{{data.readAmount}}</div>
+        <div><img class="dynamic-box__icon" src="../assets/comment.png" alt="">{{data.commentAmount}}</div>
       </div>
     </div>
   </div>
