@@ -60,17 +60,17 @@
       <div class="team-list__bd">
         <div class="team-list__info">
           <div class="team-list__name">
-            {{team.teamname}}
+            {{team.teamName}}
           </div>
           <div class="team-list__bar">
-            <img src="../../assets/iconfont-yonghu.png" alt="">
-            <span>{{ team.number }}</span>
+            <!-- <img src="../../assets/iconfont-yonghu.png" alt="">
+            <span>{{ team.poepleNum }}</span> -->
             <img src="../../assets/comment.png" alt="">
-            <span>{{ team.commentnum }}</span>
+            <span>{{ team.dynamicNum }}</span>
           </div>
         </div>
         <div class="team-list__txt">
-          {{team.teamtxt}}
+          {{team.teamTxt}}
         </div>
       </div>
     </div>
@@ -79,16 +79,49 @@
 </template>
 
 <script>
+
+import _ from 'lodash'
+
 export default {
   data () {
     return {
       teams:[
-        {id: 1,number:100, teamname:'纪念币小组', teamtxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', commentnum:100},
-        {id: 2,number:100, teamname:'纪念币小组', teamtxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', commentnum:100},
-        {id: 3,number:100, teamname:'纪念币小组', teamtxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', commentnum:100}
-      ]
+        {id: 1,poepleNum:100, teamName:'纪念币小组', teamTxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', dynamicNum:100},
+        {id: 2,poepleNum:100, teamName:'纪念币小组', teamTxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', dynamicNum:100},
+        {id: 3,poepleNum:100, teamName:'纪念币小组', teamTxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', dynamicNum:100}
+      ],
+
+      queryPage: 1,
+      querySize: 10
     }
   },
+
+  mounted() {
+    this.$request.post(this.$getUrl('groups'))
+      .send({
+        basePageResults: {
+          pageNo: this.queryPage,
+          pageSize: this.querySize
+        }
+      })
+      .then((res) => {
+        if (res.body.responseCode === '000') {
+          this.teams = []
+
+          _.each(res.body.dto, (item) => {
+            this.teams.push({
+              id: item.id,
+              dynamicNum: item.dynamicCount,
+              teamName: item.name,
+              teamTxt: item.brief
+            })
+          })
+        } else {
+          this.$toast(res.body.responseMsg)
+        }
+      })
+  },
+
   methods:{
     teamdetails(team){
       this.$router.push('/teamdetails/' + team.id)

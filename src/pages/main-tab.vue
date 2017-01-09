@@ -63,13 +63,13 @@ export default {
     selected(newVal) {
       switch (newVal) {
         case '1':
-          this.$router.push('/main-tab/dynamic')
+          this.$router.replace('/main-tab/dynamic')
           break;
         case '2':
-          this.$router.push('/main-tab/topic')
+          this.$router.replace('/main-tab/topic')
           break;
         case '3':
-          this.$router.push('/main-tab/team')
+          this.$router.replace('/main-tab/team')
           break;
       }
     },

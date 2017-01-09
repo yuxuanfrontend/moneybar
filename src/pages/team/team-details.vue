@@ -69,7 +69,7 @@
     </div>
     <div class="team-detai__bd">
       <div class="">
-        <dynamic-item v-for="dynamic in dynamics"></dynamic-item>
+        <dynamic-item v-for="(dynamic, dynamicIndex) in dynamics"  @click.native="$router.push('/dynamicdetails/' + (dynamicIndex + 1))"></dynamic-item>
       </div>
     </div>
   </div>
@@ -91,7 +91,7 @@ export default {
   },
   methods:{
     teamIntro(){
-      this.$router.push('teamIntro')
+      this.$router.push('/teamIntro')
     }
   },
   components: {

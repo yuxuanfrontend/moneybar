@@ -91,11 +91,11 @@
   <div class="dynamic-box">
     <div class="dynamic-box__head">
       <div class="dynamic-box__topic" v-if="data.type===2">#话题#{{data.topic}}</div>
-      <div v-if="data.type===3">来自<span class="dynamic-box__team">{{data.teamName}}</span></div>
+      <div v-if="data.type===3">来自<span class="dynamic-box__team" @click.stop="goTeam">{{data.teamName}}</span></div>
     </div>
     <div class="dynamic-box__body">
       <div class="dynamic-box__title">{{data.title}}</div>
-      <div class="dynamic-box__img"><horizon-images :images="data.images"></horizon-images></div>
+      <!-- <div class="dynamic-box__img" v-if="data.images && data.images.length > 0"><horizon-images :images="data.images"></horizon-images></div> -->
       <div class="dynamic-box__content">{{data.content}}</div>
     </div>
     <div class="dynamic-box__foot">
@@ -115,6 +115,7 @@
 <script>
 
 import horizonImages from './horizon-images'
+import avator from '../assets/iconfont-yonghu.png'
 import logo from '../assets/logo.png'
 
 export default {
@@ -133,8 +134,8 @@ export default {
           teamName: '小组1',
           title: '这是标题',
           content: '这是内容。。。内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
-          images: [logo, logo, logo, logo, logo],
-          avator: logo,
+          // images: [logo, logo, logo, logo, logo],
+          avator: avator,
           nickname: '王先生',
           time: '10:23',
           readAmount: 1000,
@@ -142,6 +143,12 @@ export default {
         }
       },
       type: Object
+    }
+  },
+
+  methods: {
+    goTeam() {
+      this.$router.push('/teamdetails/2')
     }
   },
 

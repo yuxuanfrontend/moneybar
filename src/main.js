@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Mint from 'mint-ui'
-import MintMessage from './plugins/mint-message'
+import RegisterVariable from './plugins/mint-message'
 import Superagent from './plugins/vue-superagent'
 
 import fastclick from 'fastclick'
@@ -19,7 +19,7 @@ import App from './App'
 fastclick.attach(document.body);
 
 Vue.use(Mint)
-Vue.use(MintMessage)
+Vue.use(RegisterVariable)
 Vue.use(Superagent)
 
 router.afterEach((route) => {

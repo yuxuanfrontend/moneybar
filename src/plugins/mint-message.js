@@ -1,11 +1,17 @@
 import { MessageBox } from 'mint-ui'
 import { Toast } from 'mint-ui'
 
-let mintMessage = {}
+import config from '../config'
 
-mintMessage.install = function(Vue, options) {
+let registerVariable = {}
+
+registerVariable.install = function(Vue, options) {
   Vue.prototype.$mintMessage = MessageBox
   Vue.prototype.$toast = Toast
+
+  Vue.prototype.$getUrl = function(partial) {
+    return config.domain + partial
+  }
 }
 
-export default mintMessage
+export default registerVariable

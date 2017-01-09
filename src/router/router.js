@@ -21,6 +21,7 @@ import publish from '../pages/publish/publish'
 module.exports = [
   {
     path: '/',
+    name: '钱吧',
     component: home
   },
 

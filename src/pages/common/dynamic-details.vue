@@ -144,8 +144,12 @@
 <template lang="html">
   <div class="page">
     <div class="dynamic-details page">
-      <div class="dynamic-details__class" v-show = "Number($route.params.id) != 1" v-on:click="entrylist">
-        <div> {{ ( Number($route.params.id) === 2 ) ? ('来自话题 '+ topictitle) : ('来自小组 '+ teamtitle) }} </div>
+      <div class="dynamic-details__class" v-if="type === 2" v-on:click="entrylist">
+        <div> {{'来自话题 '+ topictitle}} </div>
+        <div class="mint-cell-allow-right"> </div>
+      </div>
+      <div class="dynamic-details__class" v-if="type === 3" v-on:click="entrylist">
+        <div> {{'来自小组 '+ teamtitle}} </div>
         <div class="mint-cell-allow-right"> </div>
       </div>
       <div class="dynamic-details__username">
@@ -188,9 +192,13 @@
 </template>
 
 <script>
+
+import moment from 'moment'
+
 export default {
   data () {
     return {
+      type: 1,
       replyActions: [
         {name: '回复', method() {}},
         {name: '举报', method() {}},
@@ -202,7 +210,7 @@ export default {
       container:'炒股心得（1）为什么散户不会赚钱？1、炒股是资源的再分配，并不是创造财富。2、开办股市就是为了圈钱，不给你一点甜头你怎么会拿钱去投资呢？2、开办股市就是为了圈钱，不给你一点甜头你怎么会拿钱去投资呢？不给你一',
       username:'林二',
       date:'12.12',
-      inputPlaceholder:'回复 李学轩',
+      // inputPlaceholder:'回复 林二',
       readAmount: 1000,
       commentAmount: 20,
       comments:[
@@ -219,6 +227,38 @@ export default {
       ]
     }
   },
+
+  computed: {
+    inputPlaceholder() {
+      return '回复' + this.username
+    }
+  },
+
+  mounted() {
+    console.log(222);
+    this.$request.get(this.$getUrl('dynamic/readCount/' + this.$route.params.id))
+      .then((res) => {})
+
+    this.$request.get(this.$getUrl('dynamics/' + this.$route.params.id))
+      .then((res) => {
+        if (res.body.responseCode === '000') {
+          let data = res.body.dto[0]
+
+          this.username = data.nickname
+          this.type = data.type
+          this.date = moment(data.createTime).format('HH:mm')
+          this.title = data.title
+          this.container = data.content
+          this.readAmount = data.readCount
+          this.commentAmount = data.commentCount
+          this.topictitle = data.topicName
+          this.teamtitle = data.groupName
+        } else {
+          this.$toast(res.body.responseMsg)
+        }
+      })
+  },
+
   methods:{
     report(){
       this.$router.push('/report')
@@ -232,7 +272,6 @@ export default {
       }
     },
     entrylist(){
-      console.log(this.$route.params.id)
       if(Number(this.$route.params.id) === 2){
         this.$router.push('/topicdetails/'+2)
       }else if(Number(this.$route.params.id) === 3){
