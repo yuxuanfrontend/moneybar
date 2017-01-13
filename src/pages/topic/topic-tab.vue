@@ -74,72 +74,110 @@
 
 <template lang="html">
   <div class="page page--navbar">
-    <div class="topic-tab">
-      <div class="topic-tab__hd">
-        <div class="topic-tab__subject">
-          新鲜话题
-        </div>
-        <div class="topic-tab__more" v-on:click="topicmore">
-          更多
-        </div>
-      </div>
-      <div class="topic-tab__bd">
-        <div class="topic-tab__title">
-          话题标题
-        </div>
-        <div class="topic-tab__describe">
-          {{ post }}篇帖子 · {{ partIn }}人参与讨论
-        </div>
-      </div>
-        <dynamic-item v-for="dynamic in dynamicDatas" v-on:click.native="dynamicdetails(dynamic)"></dynamic-item>
-      <!-- <div class="topic-tab__comment">
-        <div class="topic-tab__list" v-for="comment in commentList">
-          <div class="topic-tab__text">
-            {{ comment.container }}
+    <mt-loadmore :top-method="loadTop" ref="loadmore">
+      <div class="topic-tab">
+        <div class="topic-tab__hd">
+          <div class="topic-tab__subject">
+            新鲜话题
           </div>
-          <div class="topic-tab__foot">
-            <div class="topic-tab__username">
-              <img class="topic-tab__img" src="../../assets/iconfont-yonghu.png" alt="">
-              <label>{{ comment.username }}</label>
-              <span>{{ comment.date }}</span>
-            </div>
-            <div class="topic-tab__review">
-              <img class="topic-tab__img" src="../../assets/pageview.png" alt="">
-              <span>{{ comment.pageview }}</span>
-              <img class="topic-tab__img" src="../../assets/comment.png" alt="">
-              <span>{{ comment.commentnum }}</span>
-            </div>
+          <div class="topic-tab__more" v-on:click="topicmore">
+            更多
           </div>
         </div>
-      </div> -->
-    </div>
+        <div class="topic-tab__bd">
+          <div class="topic-tab__title">
+            {{newTopic.title}}
+          </div>
+          <div class="topic-tab__describe">
+            {{ newTopic.post }}篇帖子
+          </div>
+        </div>
+        <dynamic-item v-for="dynamic in dynamicDatas" :data="dynamic" v-on:click.native="dynamicdetails(dynamic)"></dynamic-item>
+      </div>
+    </mt-loadmore>
   </div>
 </template>
 
 <script>
+
+import {appendDynamics} from '../../utils/dealDynamic'
+
 import dynamicItem from '../../components/dynamic-item'
+
 export default {
+  name: 'topic-tab',
+
   data () {
     return {
-      post:3,
-      partIn:10,
-      commentList:[
-        {container:'这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是',
-         username:'用户昵称',date:'12.10',pageview:'1000',commentnum:'8'}
-      ],
-      dynamicDatas: [{id:1},{id:2},{id:3}]
+      newTopic: {
+        id: '',
+        title: '',
+        post: 0,
+      },
+      dynamicDatas: [],
+
+      queryPage: 1,
+      querySize: 10
     }
   },
-  components: {
-    dynamicItem,
+
+  mounted() {
+    this.getInitData()
   },
+
   methods:{
     topicmore(){
       this.$router.push('/topiclist')
     },
     dynamicdetails(dynamic){
       this.$router.push('/dynamicdetails/'+dynamic.id)
+    },
+
+    getInitData() {
+      this.$request.post(this.$getUrl('topics'))
+        .send({
+          basePageResults: {
+            pageNo: 1,
+            pageSize: 1
+          }
+        })
+        .then((res) => {
+          if (res.body.responseCode === '000') {
+            let data = res.body.dto.results[0]
+            this.newTopic.id = data.id
+            this.newTopic.title = data.title
+            this.newTopic.post = data.dynamicCount
+          } else {
+            this.$toast(res.body.responseMsg)
+          }
+
+          return this.$request.post(this.$getUrl('dynamics'))
+            .send({
+              topic: {
+                id: this.newTopic.id
+              }
+            })
+        }).then((res) => {
+          if (res.body.responseCode === '000') {
+            this.dynamicDatas = []
+            appendDynamics(this.dynamicDatas, res.body.dto.results)
+          } else {
+            this.$toast(res.body.responseMsg)
+          }
+        })
+    },
+
+    loadTop() {
+      setTimeout(() => {
+        this.getInitData()
+        this.$refs.loadmore.onTopLoaded();
+      }, 1000)
     }
-  }
+  },
+
+  components: {
+    dynamicItem,
+  },
+
 }
 </script>

@@ -5,14 +5,15 @@
   <div class="page">
     <div class="page page--navbar">
       <mt-loadmore :top-method="loadTop" ref="loadmore">
-      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="0" infinite-scroll-immediate-check="false">
-        <dynamic-item v-for="dynamic in dynamicDatas" :data="dynamic" v-on:click.native="goDetails(dynamic)"></dynamic-item>
-      </div>
-      <div class="scroll-loading">
-        <mt-spinner class="scroll-loading__spinner" type="fading-circle" :size="20"></mt-spinner>
-        <div> 加载更多中</div>
-      </div>
-    </mt-loadmore>
+        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="0" infinite-scroll-immediate-check="false">
+          <dynamic-item v-for="dynamic in dynamicDatas" :data="dynamic" v-on:click.native="goDetails(dynamic)"></dynamic-item>
+        </div>
+        <div class="scroll-loading" v-show="loading&&dynamicDatas.length !== 0">
+          <mt-spinner class="scroll-loading__spinner" type="fading-circle" :size="20"></mt-spinner>
+          <div> 加载更多中</div>
+        </div>
+        <div class="vl-nodata" v-show="dynamicDatas.length === 0">暂无动态</div>
+      </mt-loadmore>
     </div>
     <div class="vl-float-button" @click="goPublish"><img src="../../assets/edit.png" alt=""></div>
   </div>
@@ -20,7 +21,10 @@
 
 <script>
 
+import _ from 'lodash'
 import moment from 'moment'
+
+import {appendDynamics} from '../../utils/dealDynamic'
 
 import dynamicItem from '../../components/dynamic-item'
 
@@ -30,7 +34,7 @@ export default {
   data() {
     return {
       allLoaded: false,
-      dynamicDatas: [{id:1},{id:2},{id:3}],
+      dynamicDatas: [],
       queryPage: 1,
       querySize: 5,
       loading: false
@@ -46,7 +50,7 @@ export default {
       this.queryPage++
 
       this.dynamicDatas = []
-      this.appendDynamics(res.body.dto)
+      appendDynamics(this.dynamicDatas, res.body.dto.results)
     })
   },
 
@@ -57,23 +61,24 @@ export default {
 
     queryData(callback) {
       this.$request.post(this.$getUrl('dynamics'))
-        .send({
-          basePageResults: {
-            pageNo: this.queryPage,
-            pageSize: this.querySize
-          }
-        })
-        .then((res) => {
-          if (res.body.responseCode === '000') {
-            callback(res)
-          } else {
-            this.$toast(res.body.responseMsg)
-          }
-        })
+      .send({
+        basePageResults: {
+          pageNo: this.queryPage,
+          pageSize: this.querySize
+        },
+        orderByCreateTimeDesc: true,
+        statusVal: '1'
+      })
+      .then((res) => {
+        if (res.body.responseCode === '000') {
+          callback(res)
+        } else {
+          this.$toast(res.body.responseMsg)
+        }
+      })
     },
 
     loadTop() {
-
       setTimeout(() => {
         this.queryPage = 1
 
@@ -81,28 +86,10 @@ export default {
           this.queryPage++
 
           this.dynamicDatas = []
-          this.appendDynamics(res.body.dto)
+          appendDynamics(this.dynamicDatas, res.body.dto.results)
         })
         this.$refs.loadmore.onTopLoaded();
       }, 1000)
-    },
-
-    appendDynamics(data) {
-      _.each(data, (item) => {
-        this.dynamicDatas.push({
-          id: item.id,
-          type: item.type,
-          topic: item.topicName,
-          teamName: item.groupName,
-          title: item.title,
-          content: item.content,
-          avator: item.memberPath,
-          nickname: item.nickname,
-          time: moment(item.createTime).format('HH:mm'),
-          readAmount: item.readCount,
-          commentAmount: item.commentCount
-        })
-      })
     },
 
     loadMore() {
@@ -111,14 +98,19 @@ export default {
         this.queryData((res) => {
           this.queryPage++
 
-          this.appendDynamics(res.body.dto)
+          appendDynamics(this.dynamicDatas, res.body.dto.results)
         })
         this.loading = false;
       }, 1000);
     },
 
     goPublish() {
-      this.$router.push('/publish')
+      this.$router.push({
+        path: '/publish',
+        query: {
+          type: 1
+        }
+      })
     }
   }
 }

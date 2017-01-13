@@ -29,6 +29,8 @@
 
 <script>
 export default {
+  name: 'main-tab',
+  
   data() {
     return {
       selected: ''

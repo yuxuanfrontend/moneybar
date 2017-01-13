@@ -136,7 +136,8 @@
 
 .dynamic-details-reply {
   color: $color-666;
-  padding: px2rem(6) 0;
+  padding: px2rem(6) px2rem(4);
+  background-color: $background-gray;
 }
 
 </style>
@@ -159,20 +160,23 @@
       <div class="dynamic-details__bd">
         <div class="dynamic-details__title"> {{ title }} </div>
         <div class="dynamic-details__txt"> {{ container }} </div>
-        <div class="dynamic-details__foot"><div>阅读 {{ readAmount }} 评论 {{ commentAmount }}</div><div @click="report">举报 </div> </div>
+        <div class="dynamic-details__foot"><div>阅读 {{ readAmount }} 评论 {{ commentAmount }}</div><div @click="report($route.params.id)">举报 </div> </div>
       </div>
       <div class="dynamic-details__no" v-show="comments.length === 0">暂时还没有评论，发表第一条评论吧 </div>
 
-      <div class="dynamic-details__commentbox" v-for="comment in comments" v-on:click="clickcomment(comment)">
+      <div class="dynamic-details__commentbox" v-for="comment in comments">
         <div class="dynamic-details__commentbd">
-          <div class="dynamic-details__commentname">
-            <div>{{comment.commentname}} </div>
-            <div> {{ comment.commentdate }} </div>
+          <div @click="replyComment(comment)">
+            <div class="dynamic-details__commentname">
+              <div>{{comment.name}}</div>
+              <div> {{ comment.commentdate }}</div>
+            </div>
+            <div class="dynamic-details__commentxt">{{comment.commentxt}}</div>
+            <div class="dynamic-details__commentimg"><img src="../../assets/comment.png" alt="">{{comment.replies.length}}</div>
           </div>
-          <div class="dynamic-details__commentxt" @click="replySheetVisible = true">{{comment.commentxt}}</div>
-          <div class="dynamic-details__commentimg"><img src="../../assets/comment.png" alt="">3</div>
-          <div class="dynamic-details-reply vl-font-smaller" v-if="comment.replies" v-for="reply in comment.replies" @click="replySheetVisible = true">
-            <span class="dynamic-details-reply__head">{{reply.name}}{{reply.targetName && (' 回复 ' + reply.targetName)}}:</span>
+
+          <div class="dynamic-details-reply vl-font-smaller" v-if="comment.replies" v-for="reply in comment.replies" @click="replyComment(reply, comment)">
+            <span class="dynamic-details-reply__head">{{reply.name}}<span v-if="reply.targetName">{{(' 回复 ' + reply.targetName)}}</span>:</span>
             <span class="dynamic-details-reply__body">{{reply.content}}</span>
           </div>
         </div>
@@ -180,8 +184,8 @@
 
     </div>
     <div class="dynamic-details__input">
-      <input type="text" name="" value="" :placeholder="inputPlaceholder" v-model="comment" ref="sendInput">
-      <div @click="sendout" >发送</div>
+      <input type="text" name="" value="" :placeholder="inputPlaceholder" v-model="myComment" ref="sendInput">
+      <div @click="sendout">发送</div>
     </div>
 
     <mt-actionsheet
@@ -193,29 +197,36 @@
 
 <script>
 
+import _ from 'lodash'
 import moment from 'moment'
 
 export default {
+  name: 'dynamic-detail',
   data () {
     return {
       type: 1,
       replyActions: [
-        {name: '回复', method() {}},
-        {name: '举报', method() {}},
+        {name: '回复', method: this.clickReply},
+        {name: '举报', method: this.commentReport},
       ],
+      choosedComment: null,
+      choosedParentComment: null,
       replySheetVisible: false,
+
+      topicId: null,
+      teamId: null,
       topictitle:'#话题# 说说你收藏了哪些壹分',
       teamtitle:' 有油壹分小组',
       title:'一位散户高手的炒股心得',
       container:'炒股心得（1）为什么散户不会赚钱？1、炒股是资源的再分配，并不是创造财富。2、开办股市就是为了圈钱，不给你一点甜头你怎么会拿钱去投资呢？2、开办股市就是为了圈钱，不给你一点甜头你怎么会拿钱去投资呢？不给你一',
       username:'林二',
       date:'12.12',
-      // inputPlaceholder:'回复 林二',
+      inputPlaceholder:'发表评论',
       readAmount: 1000,
       commentAmount: 20,
       comments:[
         {
-          commentname:'赵四',newcommentname:'潘青青',commentdate:'13.12',commentxt:'散户是什么意思？求教！！！帮帮帮散户是什么意思？求教！！！帮帮帮',
+          name:'赵四',newcommentname:'潘青青',commentdate:'13.12',commentxt:'散户是什么意思？求教！！！帮帮帮散户是什么意思？求教！！！帮帮帮',
           replies: [
             {
               name: '王三',
@@ -224,27 +235,31 @@ export default {
             }
           ]
         }
-      ]
+      ],
+
+      myComment: ''
     }
   },
 
   computed: {
-    inputPlaceholder() {
-      return '回复' + this.username
-    }
   },
 
   mounted() {
-    console.log(222);
+    // 增加阅读数
     this.$request.get(this.$getUrl('dynamic/readCount/' + this.$route.params.id))
       .then((res) => {})
 
-    this.$request.get(this.$getUrl('dynamics/' + this.$route.params.id))
+    this.$request.post(this.$getUrl('dynamics'))
+      .send({
+        id: this.$route.params.id
+      })
       .then((res) => {
         if (res.body.responseCode === '000') {
-          let data = res.body.dto[0]
+          let data = res.body.dto.results[0]
+          let commentsData = data.comments
 
           this.username = data.nickname
+          // this.inputPlaceholder = '回复' + this.username
           this.type = data.type
           this.date = moment(data.createTime).format('HH:mm')
           this.title = data.title
@@ -253,40 +268,154 @@ export default {
           this.commentAmount = data.commentCount
           this.topictitle = data.topicName
           this.teamtitle = data.groupName
+          this.topicId = data.topicId
+          this.teamId = data.groupId
+
+          // 读取评论
+          this.comments = []
+          _.each(commentsData, (comment1) => {
+            this.comments.push({
+              id: comment1.id,
+              name: comment1.nickname,
+              commentdate: moment(comment1.createTime).format('HH:mm'),
+              commentxt: comment1.content,
+              replies: _.map(comment1.comments, (comment2) => {
+                return {
+                  id: comment2.id,
+                  name: comment2.nickname,
+                  targetName: comment2.sid !== comment1.id && comment2.sname,
+                  content: comment2.content
+                }
+              })
+            })
+          })
         } else {
           this.$toast(res.body.responseMsg)
         }
       })
+
   },
 
   methods:{
-    report(){
-      this.$router.push('/report')
+    report(id){
+      this.$router.push({
+        path: '/report/' + id,
+        query: {
+          type: '1'
+        }
+      })
     },
+
+    commentReport() {
+      this.$router.push({
+        path: '/report/' + this.choosedComment.id,
+        query: {
+          type: '2'
+        }
+      })
+    },
+
+    replyComment(comment, parentComment) {
+      if (parentComment) {
+        this.choosedParentComment = parentComment
+      }
+      this.choosedComment = comment
+      this.replySheetVisible = true
+    },
+
     sendout(){
-      if(this.comment === '' || this.comment === undefined){
+
+      if(this.myComment.trim() === ''){
+        this.$toast('评论不能为空')
         return false
-      }else{
-        this.comments.push({commentname:'李福振',newcommentname:'潘青青',commentdate:'13.12',commentxt:this.comment})
-        this.comment = ''
       }
+
+      if (!this.choosedComment) {
+        this.publishComment()
+        return false
+      }
+
+      this.publishChildComment()
     },
+
     entrylist(){
-      if(Number(this.$route.params.id) === 2){
-        this.$router.push('/topicdetails/'+2)
-      }else if(Number(this.$route.params.id) === 3){
-        this.$router.push('/teamdetails/'+3)
+      if(this.type === 2){
+        this.$router.push('/topicdetails/' + this.topicId)
+      }else if(this.type === 3){
+        this.$router.push('/teamdetails/' + this.teamId)
       }
     },
-    clickcomment(comment){
-      // let event = window.document.createEvent('HTMLEvents')
-      // event.initEvent('focus', true, false)
-      //
-      // console.log()
-      // this.$refs.sendInput.dispatchEvent(event)
+
+    clickReply(){
       this.$refs.sendInput.focus()
-      this.inputPlaceholder = ''
-      this.inputPlaceholder = '回复 '+comment.newcommentname
+      this.inputPlaceholder = '回复' + this.choosedComment.name
+    },
+
+    // 发表一级评论
+    publishComment() {
+      this.$request.post(this.$getUrl('comment/publish/' + this.$route.params.id))
+        .send({
+          commentator: {
+            openId: '111'
+          },
+          content: this.myComment,
+        })
+        .then((res) => {
+          if (res.body.responseCode === '000') {
+            let data = res.body.dto
+            this.comments.splice(0, 0, {
+              id: data.id,
+              name: data.nickname,
+              newcommentname: data.sname,
+              commentdate: moment(data.createTime).format("HH:mm"),
+              commentxt: data.content,
+              replies: []
+            })
+
+            this.$toast('发布成功')
+            this.myComment = ''
+          } else {
+            this.$toast(res.body.responseMsg)
+          }
+        })
+    },
+
+    // 发表子评论
+    publishChildComment(callback) {
+      this.$request.post(this.$getUrl('comment/publish/child/' + this.choosedComment.id))
+        .send({
+          commentator: {
+            openId: '111'
+          },
+          content: this.myComment
+        })
+        .then((res) => {
+          if (res.body.responseCode === '000') {
+            let data = res.body.dto
+
+            if (!this.choosedParentComment) {
+              this.choosedComment.replies.push({
+                id: data.id,
+                name: data.nickname,
+                // targetName: data.sname,
+                content: data.content
+              })
+            } else {
+              this.choosedParentComment.replies.push({
+                id: data.id,
+                name: data.nickname,
+                targetName: data.sid !== this.choosedParentComment.id && data.sname,
+                content: data.content
+              })
+            }
+
+            this.choosedComment = null
+            this.$toast('发布成功')
+            this.myComment = ''
+          } else {
+            this.$toast(res.body.responseMsg)
+          }
+        })
     }
   }
 }

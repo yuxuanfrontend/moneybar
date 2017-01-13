@@ -2,33 +2,53 @@
 </style>
 <template lang="html">
   <div class="topic-list">
-    <mt-cell v-for="topic in topics" :title="topic.title" :label="labeltxt" is-link @click.native="$router.push('/topicdetails/2')"></mt-cell>
+    <mt-cell v-for="topic in topics" :title="topic.title" :label="topic.labelTxt" is-link @click.native="$router.push('/topicdetails/' + topic.id)"></mt-cell>
   </div>
 </template>
 
 <script>
+
+import _ from 'lodash'
+
 export default {
   data () {
     return {
       post:3,
       partIn:10,
-      topics: [
-        {
-          title: '说说你收藏了哪些壹分'
-        },
-        {
-          title: '壹分极具增长潜力'
-        },
-        {
-          title: '一轮牛，抓紧买入'
-        }
-      ]
+      topics: [],
+      queryPage: 1,
+      querySize: 10
     }
   },
+
   computed:{
     labeltxt(){
       return this.post+"篇帖子 · "+this.partIn+"人参与讨论"
     }
+  },
+
+  mounted() {
+    this.$requestWithLoading('post', 'topics')
+      .send({
+        basePageResults: {
+          pageNo: this.queryPage,
+          pageSize: this.querySize
+        }
+      })
+      .then((res) => {
+        if (res.body.responseCode === '000') {
+          this.topics = []
+          _.each(res.body.dto.results, (item) => {
+            this.topics.push({
+              id: item.id,
+              title: item.title,
+              labelTxt: item.dynamicCount + "篇帖子"
+            })
+          })
+        } else {
+          this.$toast(res.body.responseMsg)
+        }
+      })
   }
 }
 </script>

@@ -34,16 +34,16 @@
   <div class="comment-item">
       <div class="comment-item__hd">
         <div class="comment-item__reply">
-          {{ '回复 : ' + commentxt }}
+          {{ '回复 : ' + data.commentxt }}
         </div>
         <div class="comment-item__delete">
           <div v-on:click="deletecom"> 删除 </div>
-          <div> {{ commentdate }} </div>
+          <div> {{ data.commentdate }} </div>
         </div>
       </div>
-      <div class="comment-item__bd"> {{ newCommenttxt }} </div>
+      <div class="comment-item__bd"> {{ data.dynamicText }} </div>
       <div class="comment-item__foot">
-        {{ commentname + ' : ' }} {{ commenttxt }}
+        {{ data.commentname + ' : ' }} {{ data.commenttxt }}
       </div>
   </div>
 </template>
@@ -57,6 +57,12 @@ export default {
       newCommenttxt:'这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个…',
       commentname:'李福振',
       commenttxt:'这是一个段落示例。这是一个段落示'
+    }
+  },
+  props: {
+    data: {
+      type: Object,
+      required: true
     }
   },
   methods:{

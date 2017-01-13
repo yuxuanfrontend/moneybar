@@ -47,7 +47,8 @@ export default {
   data() {
     return {
       title: '',
-      content: ''
+      content: '',
+      openId: 111
     }
   },
 
@@ -64,8 +65,25 @@ export default {
         return false
       }
 
-      this.$toast('发布成功')
-      this.$router.push('/main-tab/dynamic')
+      this.$request.post(this.$getUrl('dynamic/' + this.openId))
+        .send({
+          topic: {
+            id: this.$route.query.id,
+          },
+          type: this.$route.query.type,
+          title: this.title,
+          content: this.content
+        })
+        .then((res) => {
+          if (res.body.responseCode === '000') {
+
+            this.$toast('发布成功')
+            this.$router.back()
+          } else {
+            this.$toast(res.body.responseMsg)
+          }
+        })
+
     }
   }
 }

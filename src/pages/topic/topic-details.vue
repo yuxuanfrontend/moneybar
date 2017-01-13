@@ -76,60 +76,102 @@
     <div class="topic-details">
       <div class="topic-tab__bd">
         <div class="topic-tab__title">
-          话题标题
+          {{topicName}}
         </div>
         <div class="topic-tab__describe">
-          {{ post }}篇帖子 · {{ partIn }}人参与讨论
+          {{ dynamicNum }}篇帖子
         </div>
       </div>
-      <dynamic-item v-for="dynamic in dynamicDatas" v-on:click.native="dynamicdetails(dynamic)"></dynamic-item>
-      <!-- <div class="topic-tab__comment">
-        <div class="topic-tab__list" v-for="comment in commentList">
-          <div class="topic-tab__text">
-            {{ comment.container }}
-          </div>
-          <div class="topic-tab__foot">
-            <div class="topic-tab__username">
-              <img class="topic-tab__img" src="../../assets/iconfont-yonghu.png" alt="">
-              <label>{{ comment.username }}</label>
-              <span>{{ comment.date }}</span>
-            </div>
-            <div class="topic-tab__review">
-              <img class="topic-tab__img" src="../../assets/pageview.png" alt="">
-              <span>{{ comment.pageview }}</span>
-              <img class="topic-tab__img" src="../../assets/comment.png" alt="">
-              <span>{{ comment.commentnum }}</span>
-            </div>
-          </div>
-        </div>
-      </div> -->
+      <dynamic-item v-for="dynamic in dynamicDatas" :data="dynamic" v-on:click.native="dynamicdetails(dynamic)"></dynamic-item>
     </div>
+    <div class="vl-nodata" v-if="dynamicDatas.length === 0">暂无评论</div>
+    <div class="vl-float-button" @click="goPublish"><img src="../../assets/edit.png" alt=""></div>
   </div>
 </template>
 
 <script>
+
+import _ from 'lodash'
+import moment from 'moment'
+
+import {appendDynamics} from '../../utils/dealDynamic'
+
 import dynamicItem from '../../components/dynamic-item'
+
 export default {
   data () {
     return {
-      post:3,
-      partIn:10,
-      commentList:[
-        {container:'这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是',
-         username:'用户昵称',date:'12.10',pageview:'1000',commentnum:'8'}
-      ],
-      dynamicDatas: [{id:1},{id:2},{id:3}]
+      topicName: '',
+      dynamicNum: 3,
+      dynamicDatas: []
     }
   },
   components: {
     dynamicItem
   },
+
+  mounted() {
+    this.$request.post(this.$getUrl('topics'))
+      .send({
+        id: this.$route.params.id
+      })
+      .then((res) => {
+        if (res.body.responseCode === '000') {
+          let topicData = res.body.dto.results[0]
+          this.topicName = topicData.title
+          this.dynamicNum = topicData.dynamicCount
+        } else {
+          this.$toast(res.body.responseMsg)
+        }
+      })
+
+    this.$request.post(this.$getUrl('dynamics'))
+      .send({
+        topic: {
+          id: this.$route.params.id
+        }
+      })
+      .then((res) => {
+        if (res.body.responseCode === '000') {
+          this.dynamicDatas = []
+
+          appendDynamics(this.dynamicDatas, res.body.dto.results)
+          // _.each(res.body.dto.results, (item) => {
+          //   this.dynamicDatas.push({
+          //     id: item.id,
+          //     type: item.type,
+          //     topic: item.topicName,
+          //     teamName: item.groupName,
+          //     title: item.title,
+          //     content: item.content,
+          //     avator: item.memberPath,
+          //     nickname: item.nickname,
+          //     time: moment(item.createTime).format('HH:mm'),
+          //     readAmount: item.readCount,
+          //     commentAmount: item.commentCount
+          //   })
+          // })
+        } else {
+          this.$toast(res.body.responseMsg)
+        }
+      })
+  },
+
   methods:{
     topicmore(){
       this.$router.push('topiclist')
     },
     dynamicdetails(dynamic){
       this.$router.push('/dynamicdetails/'+dynamic.id)
+    },
+    goPublish() {
+      this.$router.push({
+        path: '/publish',
+        query: {
+          id: this.$route.params.id,
+          type: 2
+        }
+      })
     }
   }
 }

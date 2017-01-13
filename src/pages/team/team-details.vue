@@ -58,10 +58,10 @@
         <div class="team-detail__bar">
           <label>管理员:</label>
           <span>{{username}}</span>
-          <img src="../../assets/iconfont-yonghu.png" alt="">
-          <span>{{ number }}</span>
+          <!-- <img src="../../assets/iconfont-yonghu.png" alt="">
+          <span>{{ number }}</span> -->
           <img src="../../assets/comment.png" alt="">
-          <span>{{ commentnum }}</span>
+          <span>{{ dynamicNum }}</span>
         </div>
       </div>
       <div class="mint-cell-allow-right">
@@ -69,9 +69,10 @@
     </div>
     <div class="team-detai__bd">
       <div class="">
-        <dynamic-item v-for="(dynamic, dynamicIndex) in dynamics"  @click.native="$router.push('/dynamicdetails/' + (dynamicIndex + 1))"></dynamic-item>
+        <dynamic-item v-for="(dynamic, dynamicIndex) in dynamics" :data="dynamic"  @click.native="$router.push('/dynamicdetails/' + (dynamicIndex + 1))"></dynamic-item>
       </div>
     </div>
+    <div class="vl-float-button" @click="goPublish"><img src="../../assets/edit.png" alt=""></div>
   </div>
 </template>
 
@@ -83,15 +84,71 @@ export default {
   data () {
     return {
       teamname:'油一分小组',
-      username:'李学轩',
-      number:100,
-      commentnum:100,
+      username:'fda',
+      // number:100,
+      dynamicNum:0,
       dynamics: [{},{},{}]
     }
   },
+
+  mounted() {
+    this.$request.post(this.$getUrl('groups'))
+      .send({
+        id: this.$route.params.id
+      })
+      .then((res) => {
+        if (res.body.responseCode === '000') {
+          let teamData = res.body.dto[0]
+          this.teamname = teamData.name
+          this.username = teamData.memberName
+          this.dynamicNum = teamData.dynamicCount
+        } else {
+          this.$toast(res.body.responseMsg)
+        }
+      })
+
+      this.$request.post(this.$getUrl('dynamics'))
+        .send({
+          group: {
+            id: this.$route.params.id
+          }
+        })
+        .then((res) => {
+          if (res.body.responseCode === '000') {
+            this.dynamics = []
+            _.each(res.body.dto, (item) => {
+              this.dynamics.push({
+                id: item.id,
+                type: item.type,
+                topic: item.topicName,
+                teamName: item.groupName,
+                title: item.title,
+                content: item.content,
+                avator: item.memberPath,
+                nickname: item.nickname,
+                time: moment(item.createTime).format('HH:mm'),
+                readAmount: item.readCount,
+                commentAmount: item.commentCount
+              })
+            })
+          } else {
+            this.$toast(res.body.responseMsg)
+          }
+        })
+  },
+
   methods:{
     teamIntro(){
-      this.$router.push('/teamIntro')
+      this.$router.push('/teamIntro/' + this.$route.params.id)
+    },
+    goPublish() {
+      this.$router.push({
+        path: '/publish',
+        query: {
+          id: this.$route.params.id,
+          type: 3
+        }
+      })
     }
   },
   components: {

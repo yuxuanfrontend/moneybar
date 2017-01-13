@@ -99,10 +99,10 @@
             {{ teamname }}
           </div>
           <div class="team-intro__bar">
-            <img src="../../assets/iconfont-yonghu.png" alt="">
-            <span>{{ number }}</span>
+            <!-- <img src="../../assets/iconfont-yonghu.png" alt="">
+            <span>{{ number }}</span> -->
             <img src="../../assets/comment.png" alt="">
-            <span>{{ commentnum }}</span>
+            <span>{{ dynamicNum }}</span>
           </div>
         </div>
       </div>
@@ -138,10 +138,28 @@ export default {
     return {
       teamname:'油一分小组',
       username:'李学轩',
-      number:100,
-      commentnum:100,
+      // number:100,
+      dynamicNum:100,
       teamcontainer:'这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例例。这是一个段落示例。这是一个段落示'
     }
+  },
+
+  mounted() {
+    this.$request.post(this.$getUrl('groups'))
+      .send({
+        id: this.$route.params.id
+      })
+      .then((res) => {
+        if (res.body.responseCode === '000') {
+          let teamData = res.body.dto[0]
+          this.teamname = teamData.name
+          this.username = teamData.memberName
+          this.dynamicNum = teamData.dynamicCount
+          this.teamcontainer = teamData.brief
+        } else {
+          this.$toast(res.body.responseMsg)
+        }
+      })
   }
 }
 </script>

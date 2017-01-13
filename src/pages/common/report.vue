@@ -24,6 +24,7 @@
 export default {
   data(){
     return{
+      value: null,
       options : [
         { label: '政治因素', value: '值A'},
         { label: '色情低俗内容', value: '值B' },
@@ -32,10 +33,61 @@ export default {
       ]
     }
   },
+
+  mounted() {
+    this.$request.get(this.$getUrl('accusations'))
+      .then((res) => {
+        if (res.body.responseCode === '000') {
+          this.options = res.body.dto.map((item) => {
+            return {
+              label: item.content,
+              value: item.id + ''
+            }
+          })
+        } else {
+          this.$toast(res.body.responseMsg)
+        }
+      })
+  },
+
   methods:{
     submit(){
-      this.$toast('举报成功')
-      this.$router.back()
+      if (!this.value) {
+        this.$toast('请选择一个举报选项')
+        return false
+      }
+
+      if (this.$route.query.type === '1') {
+        this.$request.post(this.$getUrl('dynamic/accusation/' + this.$route.params.id))
+        .query({
+          openId: '111',
+          accusationId: this.value
+        })
+        .then((res) => {
+          if (res.body.responseCode === '000') {
+            this.$toast('举报成功')
+            this.$router.back()
+          } else {
+            this.$toast(res.body.responseMsg)
+          }
+        })
+      }
+
+      if (this.$route.query.type === '2') {
+        this.$request.post(this.$getUrl('comment/accusation/' + this.$route.params.id))
+        .query({
+          openId: '111',
+          accusationId: this.value
+        })
+        .then((res) => {
+          if (res.body.responseCode === '000') {
+            this.$toast('举报成功')
+            this.$router.back()
+          } else {
+            this.$toast(res.body.responseMsg)
+          }
+        })
+      }
     }
   }
 }

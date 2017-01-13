@@ -14,7 +14,7 @@ import report from '../pages/common/report'
 import personal from '../pages/personal/personal'
 import mypublish from '../pages/personal/my-publish'
 import personalinfo from '../pages/personal/personal-info'
-import myheard from '../pages/personal/my-heard'
+import myMessage from '../pages/personal/my-message'
 
 import publish from '../pages/publish/publish'
 
@@ -54,7 +54,7 @@ module.exports = [
     component:dynamicdetails
   },
   {
-    path:'/report',
+    path:'/report/:id',
     name:'举报',
     component:report
   },
@@ -77,7 +77,7 @@ module.exports = [
   },
 
   {
-    path:'/teamintro',
+    path:'/teamintro/:id',
     name:'小组介绍',
     component:teamintro
   },
@@ -101,9 +101,9 @@ module.exports = [
   },
 
   {
-    path:'/myheard',
+    path:'/my-message',
     name:'我的消息',
-    component:myheard
+    component:myMessage
   },
 
   {

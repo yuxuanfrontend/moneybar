@@ -53,27 +53,30 @@
 
 <template lang="html">
   <div class="page page--navbar">
-    <div class="team-list" v-for="(team,index) in teams" @click="teamdetails(team)">
-      <div class="team-list__logo">
-        <img src="../../assets/logo.png" alt="">
-      </div>
-      <div class="team-list__bd">
-        <div class="team-list__info">
-          <div class="team-list__name">
-            {{team.teamName}}
+    <mt-loadmore :top-method="loadTop" ref="loadmore">
+      <div class="team-list" v-for="(team,index) in teams" @click="teamdetails(team)">
+        <div class="team-list__logo">
+          <img src="../../assets/logo.png" alt="">
+        </div>
+        <div class="team-list__bd">
+          <div class="team-list__info">
+            <div class="team-list__name">
+              {{team.teamName}}
+            </div>
+            <div class="team-list__bar">
+              <!-- <img src="../../assets/iconfont-yonghu.png" alt="">
+              <span>{{ team.poepleNum }}</span> -->
+              <img src="../../assets/comment.png" alt="">
+              <span>{{ team.dynamicNum }}</span>
+            </div>
           </div>
-          <div class="team-list__bar">
-            <!-- <img src="../../assets/iconfont-yonghu.png" alt="">
-            <span>{{ team.poepleNum }}</span> -->
-            <img src="../../assets/comment.png" alt="">
-            <span>{{ team.dynamicNum }}</span>
+          <div class="team-list__txt">
+            {{team.teamTxt}}
           </div>
         </div>
-        <div class="team-list__txt">
-          {{team.teamTxt}}
-        </div>
       </div>
-    </div>
+      <div class="vl-nodata" v-if="teams.length === 0">暂无数据</div>
+    </mt-loadmore>
   </div>
 
 </template>
@@ -83,6 +86,8 @@
 import _ from 'lodash'
 
 export default {
+  name: 'team-tab',
+
   data () {
     return {
       teams:[
@@ -97,34 +102,45 @@ export default {
   },
 
   mounted() {
-    this.$request.post(this.$getUrl('groups'))
-      .send({
-        basePageResults: {
-          pageNo: this.queryPage,
-          pageSize: this.querySize
-        }
-      })
-      .then((res) => {
-        if (res.body.responseCode === '000') {
-          this.teams = []
-
-          _.each(res.body.dto, (item) => {
-            this.teams.push({
-              id: item.id,
-              dynamicNum: item.dynamicCount,
-              teamName: item.name,
-              teamTxt: item.brief
-            })
-          })
-        } else {
-          this.$toast(res.body.responseMsg)
-        }
-      })
+    this.getTeamList()
   },
 
   methods:{
     teamdetails(team){
       this.$router.push('/teamdetails/' + team.id)
+    },
+
+    getTeamList() {
+      this.$request.post(this.$getUrl('groups'))
+        .send({
+          basePageResults: {
+            pageNo: this.queryPage,
+            pageSize: this.querySize
+          }
+        })
+        .then((res) => {
+          if (res.body.responseCode === '000') {
+            this.teams = []
+
+            _.each(res.body.dto.results, (item) => {
+              this.teams.push({
+                id: item.id,
+                dynamicNum: item.dynamicCount,
+                teamName: item.name,
+                teamTxt: item.brief
+              })
+            })
+          } else {
+            this.$toast(res.body.responseMsg)
+          }
+        })
+    },
+
+    loadTop() {
+      setTimeout(() => {
+        this.getTeamList()
+        this.$refs.loadmore.onTopLoaded();
+      }, 1000)
     }
   }
 }
