@@ -43,22 +43,13 @@
       </div>
       <div class="comment-item__bd"> {{ data.dynamicText }} </div>
       <div class="comment-item__foot">
-        {{ data.commentname + ' : ' }} {{ data.commenttxt }}
+        {{ data.commentname + ' : ' }} {{ data.replyText }}
       </div>
   </div>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      commentxt:'吗妈妈买',
-      commentdate:12.13,
-      newCommenttxt:'这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个…',
-      commentname:'李福振',
-      commenttxt:'这是一个段落示例。这是一个段落示'
-    }
-  },
   props: {
     data: {
       type: Object,

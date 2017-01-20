@@ -19,7 +19,8 @@
     align-items: center;
   }
   &__logo img{
-    width:80%;
+    width:50px;
+    height: 50px;
   }
   &__title{
     width: 85%;
@@ -33,7 +34,6 @@
   &__bar{
     width: 70%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     color: $color-gray;
     font-size: 14px;
@@ -46,18 +46,17 @@
 }
 </style>
 <template lang="html">
-  <div class="team-detail">
+  <div class="page team-detail">
     <div class="team-detail__hd" @click="teamIntro">
       <div class="team-detail__logo">
-        <img src="../../assets/logo.png" alt="">
+        <img :src="logo" alt="">
       </div>
       <div class="team-detail__info">
         <div class="team-detail__title">
           {{ teamname }}
         </div>
         <div class="team-detail__bar">
-          <label>管理员:</label>
-          <span>{{username}}</span>
+          <span style="margin-right:25px;">管理员:{{username}}</span>
           <!-- <img src="../../assets/iconfont-yonghu.png" alt="">
           <span>{{ number }}</span> -->
           <img src="../../assets/comment.png" alt="">
@@ -78,16 +77,18 @@
 
 <script>
 
+import moment from 'moment'
+
 import dynamicItem from '../../components/dynamic-item'
 
 export default {
   data () {
     return {
       teamname:'油一分小组',
+      logo: '',
       username:'fda',
-      // number:100,
       dynamicNum:0,
-      dynamics: [{},{},{}]
+      dynamics: []
     }
   },
 
@@ -98,7 +99,8 @@ export default {
       })
       .then((res) => {
         if (res.body.responseCode === '000') {
-          let teamData = res.body.dto[0]
+          let teamData = res.body.dto.results[0]
+          this.logo = teamData.logo
           this.teamname = teamData.name
           this.username = teamData.memberName
           this.dynamicNum = teamData.dynamicCount
@@ -116,7 +118,7 @@ export default {
         .then((res) => {
           if (res.body.responseCode === '000') {
             this.dynamics = []
-            _.each(res.body.dto, (item) => {
+            _.each(res.body.dto.results, (item) => {
               this.dynamics.push({
                 id: item.id,
                 type: item.type,

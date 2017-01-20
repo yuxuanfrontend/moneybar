@@ -3,7 +3,6 @@
 @import "../../styles/colors.scss";
 
 .topic-tab{
-  font-family: "微软雅黑";
 
   &__hd,&__bd,&__list{
     padding: px2rem(10) px2rem(15);
@@ -23,16 +22,8 @@
   }
   &__title{
     color: $color-333;
-    font-size: 16px;
-  }
-  &__subject{
-    font-size: 18px;
-  }
-  &__more{
-    font-size: 16px;
   }
   &__describe{
-    font-size: 14px;
     color: $color-gray;
   }
   &__comment{
@@ -41,7 +32,6 @@
   }
   &__text{
     padding: px2rem(10) 0;
-    font-size: 16px;
     line-height: px2rem(28);
     color:  $color-666;
   }
@@ -63,7 +53,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 14px;
     color: $color-gray;
   }
   &__img{
@@ -80,7 +69,7 @@
           <div class="topic-tab__subject">
             新鲜话题
           </div>
-          <div class="topic-tab__more" v-on:click="topicmore">
+          <div class="topic-tab__more vl-font-small" v-on:click="topicmore">
             更多
           </div>
         </div>
@@ -94,7 +83,9 @@
         </div>
         <dynamic-item v-for="dynamic in dynamicDatas" :data="dynamic" v-on:click.native="dynamicdetails(dynamic)"></dynamic-item>
       </div>
+      <div class="vl-nodata" v-show="dynamicDatas.length === 0">暂无动态</div>
     </mt-loadmore>
+    <div class="vl-float-button" v-show="newTopic.id" @click="goPublish"><img src="../../assets/edit.png" alt=""></div>
   </div>
 </template>
 
@@ -133,13 +124,24 @@ export default {
       this.$router.push('/dynamicdetails/'+dynamic.id)
     },
 
+    goPublish() {
+      this.$router.push({
+        path: '/publish',
+        query: {
+          id: this.newTopic.id,
+          type: 2
+        }
+      })
+    },
+
     getInitData() {
       this.$request.post(this.$getUrl('topics'))
         .send({
           basePageResults: {
             pageNo: 1,
             pageSize: 1
-          }
+          },
+          statusVal: '0'
         })
         .then((res) => {
           if (res.body.responseCode === '000') {
@@ -155,7 +157,8 @@ export default {
             .send({
               topic: {
                 id: this.newTopic.id
-              }
+              },
+              statusVal: '1'
             })
         }).then((res) => {
           if (res.body.responseCode === '000') {

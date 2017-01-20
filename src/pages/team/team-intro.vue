@@ -20,7 +20,8 @@
 
   &__userimg img,
   &__logo img{
-    width: 80%;
+    width: 50px;
+    height: 50px;
   }
 
   &__title{
@@ -81,7 +82,7 @@
     height: px2rem(40);
   }
   &__userimg img{
-    width: px3rem(30);
+    width: px2rem(30);
   }
 
 }
@@ -92,7 +93,7 @@
     <div class="team-intro">
       <div class="team-intro__hd">
         <div class="team-intro__logo">
-          <img src="../../assets/logo.png" alt="">
+          <img :src="logo" alt="">
         </div>
         <div class="team-intro__info">
           <div class="team-intro__title">
@@ -138,7 +139,7 @@ export default {
     return {
       teamname:'油一分小组',
       username:'李学轩',
-      // number:100,
+      logo: '',
       dynamicNum:100,
       teamcontainer:'这是一个段落示例。这是一个段落示例。这是一个段落示例。这是一个段落示例例。这是一个段落示例。这是一个段落示'
     }
@@ -151,11 +152,12 @@ export default {
       })
       .then((res) => {
         if (res.body.responseCode === '000') {
-          let teamData = res.body.dto[0]
+          let teamData = res.body.dto.results[0]
           this.teamname = teamData.name
           this.username = teamData.memberName
           this.dynamicNum = teamData.dynamicCount
           this.teamcontainer = teamData.brief
+          this.logo = teamData.logo
         } else {
           this.$toast(res.body.responseMsg)
         }

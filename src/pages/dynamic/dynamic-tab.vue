@@ -5,10 +5,10 @@
   <div class="page">
     <div class="page page--navbar">
       <mt-loadmore :top-method="loadTop" ref="loadmore">
-        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="0" infinite-scroll-immediate-check="false">
+        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="isLoading" infinite-scroll-distance="0" infinite-scroll-immediate-check="false">
           <dynamic-item v-for="dynamic in dynamicDatas" :data="dynamic" v-on:click.native="goDetails(dynamic)"></dynamic-item>
         </div>
-        <div class="scroll-loading" v-show="loading&&dynamicDatas.length !== 0">
+        <div class="scroll-loading" v-show="isLoading&&dynamicDatas.length !== 0">
           <mt-spinner class="scroll-loading__spinner" type="fading-circle" :size="20"></mt-spinner>
           <div> 加载更多中</div>
         </div>
@@ -37,7 +37,7 @@ export default {
       dynamicDatas: [],
       queryPage: 1,
       querySize: 5,
-      loading: false
+      isLoading: false
     }
   },
 
@@ -87,20 +87,25 @@ export default {
 
           this.dynamicDatas = []
           appendDynamics(this.dynamicDatas, res.body.dto.results)
+
         })
         this.$refs.loadmore.onTopLoaded();
       }, 1000)
     },
 
     loadMore() {
-      this.loading = true;
+      this.isLoading = true;
       setTimeout(() => {
         this.queryData((res) => {
           this.queryPage++
 
           appendDynamics(this.dynamicDatas, res.body.dto.results)
+
+          if (res.body.dto.results.length === 0) {
+            this.$toast('没有更多动态了')
+          }
         })
-        this.loading = false;
+        this.isLoading = false;
       }, 1000);
     },
 

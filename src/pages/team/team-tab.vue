@@ -19,7 +19,8 @@
     padding: 0 px2rem(5);
   }
   &__logo img{
-    width: 80%;
+    width: 50px;
+    height: 50px;
   }
   &__num img{
     width: px2rem(20);
@@ -30,7 +31,6 @@
   }
   &__name{
     color: $color-333;
-    font-size: 16px;
   }
   &__name,&__bar{
     display: flex;
@@ -44,7 +44,6 @@
   }
   &__txt{
     margin-top: px2rem(5);
-    font-size: 14px;
     line-height: px2rem(20);
     color: $color-666;
   }
@@ -56,7 +55,7 @@
     <mt-loadmore :top-method="loadTop" ref="loadmore">
       <div class="team-list" v-for="(team,index) in teams" @click="teamdetails(team)">
         <div class="team-list__logo">
-          <img src="../../assets/logo.png" alt="">
+          <img :src="team.logo" alt="">
         </div>
         <div class="team-list__bd">
           <div class="team-list__info">
@@ -70,12 +69,12 @@
               <span>{{ team.dynamicNum }}</span>
             </div>
           </div>
-          <div class="team-list__txt">
+          <div class="team-list__txt vl-font-small">
             {{team.teamTxt}}
           </div>
         </div>
       </div>
-      <div class="vl-nodata" v-if="teams.length === 0">暂无数据</div>
+      <div class="vl-nodata" v-if="teams.length === 0">暂无小组</div>
     </mt-loadmore>
   </div>
 
@@ -90,11 +89,7 @@ export default {
 
   data () {
     return {
-      teams:[
-        {id: 1,poepleNum:100, teamName:'纪念币小组', teamTxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', dynamicNum:100},
-        {id: 2,poepleNum:100, teamName:'纪念币小组', teamTxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', dynamicNum:100},
-        {id: 3,poepleNum:100, teamName:'纪念币小组', teamTxt:'这是一个段落示例。段落示例。例。这是一个段落示例。这是一个段落示', dynamicNum:100}
-      ],
+      teams:[],
 
       queryPage: 1,
       querySize: 10
@@ -127,7 +122,8 @@ export default {
                 id: item.id,
                 dynamicNum: item.dynamicCount,
                 teamName: item.name,
-                teamTxt: item.brief
+                teamTxt: item.brief,
+                logo: item.logo
               })
             })
           } else {

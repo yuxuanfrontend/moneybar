@@ -1,3 +1,5 @@
+@import "./font-size.scss";
+
 .mint-navbar {
   height: 44px;
   border-bottom: 1px solid #eeeeee;
@@ -18,8 +20,11 @@
   width: 10px;
   height: 10px;
 }
-.mint-cell {
-  min-height: 60px;
+// .mint-cell {
+//   min-height: 38px;
+// }
+.mint-cell-wrapper {
+  font-size: $bodyFontSize;
 }
 .mint-navbar.is-fixed{
   position: absolute;
@@ -33,5 +38,5 @@
   left: 6px;
 }
 .mint-loadmore {
-  height: 100%;
+  min-height: 100%;
 }

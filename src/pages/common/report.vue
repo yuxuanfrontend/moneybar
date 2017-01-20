@@ -38,7 +38,7 @@ export default {
     this.$request.get(this.$getUrl('accusations'))
       .then((res) => {
         if (res.body.responseCode === '000') {
-          this.options = res.body.dto.map((item) => {
+          this.options = res.body.dto.results.map((item) => {
             return {
               label: item.content,
               value: item.id + ''
@@ -60,7 +60,7 @@ export default {
       if (this.$route.query.type === '1') {
         this.$request.post(this.$getUrl('dynamic/accusation/' + this.$route.params.id))
         .query({
-          openId: '111',
+          openId: this.$store.state.identity.openId,
           accusationId: this.value
         })
         .then((res) => {

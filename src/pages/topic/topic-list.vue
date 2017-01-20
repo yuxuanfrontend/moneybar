@@ -33,7 +33,8 @@ export default {
         basePageResults: {
           pageNo: this.queryPage,
           pageSize: this.querySize
-        }
+        },
+        statusVal: '0'
       })
       .then((res) => {
         if (res.body.responseCode === '000') {

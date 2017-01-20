@@ -84,7 +84,7 @@
       </div>
       <dynamic-item v-for="dynamic in dynamicDatas" :data="dynamic" v-on:click.native="dynamicdetails(dynamic)"></dynamic-item>
     </div>
-    <div class="vl-nodata" v-if="dynamicDatas.length === 0">暂无评论</div>
+    <div class="vl-nodata" v-if="dynamicDatas.length === 0">暂无动态</div>
     <div class="vl-float-button" @click="goPublish"><img src="../../assets/edit.png" alt=""></div>
   </div>
 </template>
@@ -129,28 +129,14 @@ export default {
       .send({
         topic: {
           id: this.$route.params.id
-        }
+        },
+        statusVal: '1'
       })
       .then((res) => {
         if (res.body.responseCode === '000') {
           this.dynamicDatas = []
 
           appendDynamics(this.dynamicDatas, res.body.dto.results)
-          // _.each(res.body.dto.results, (item) => {
-          //   this.dynamicDatas.push({
-          //     id: item.id,
-          //     type: item.type,
-          //     topic: item.topicName,
-          //     teamName: item.groupName,
-          //     title: item.title,
-          //     content: item.content,
-          //     avator: item.memberPath,
-          //     nickname: item.nickname,
-          //     time: moment(item.createTime).format('HH:mm'),
-          //     readAmount: item.readCount,
-          //     commentAmount: item.commentCount
-          //   })
-          // })
         } else {
           this.$toast(res.body.responseMsg)
         }

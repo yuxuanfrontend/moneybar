@@ -20,12 +20,18 @@
       <mt-tab-item id="2">我的评论</mt-tab-item>
     </mt-navbar>
     <div class="page page--navbar">
-      <mt-tab-container v-model="selected">
-        <mt-tab-container-item id="1">
-          <dynamic-item v-for="dynamic in dynamics" :data="dynamic" v-on:click.native="dynamicdetails"></dynamic-item>
+      <mt-tab-container v-model="selected" >
+        <mt-tab-container-item id="1" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="0" infinite-scroll-immediate-check="false">
+          <dynamic-item v-for="dynamic in dynamics" :data="dynamic" v-on:click.native="goDetails(dynamic)"></dynamic-item>
+          <div class="scroll-loading" v-show="loading||dynamics.length !== 0">
+            <mt-spinner class="scroll-loading__spinner" type="fading-circle" :size="20"></mt-spinner>
+            <div> 加载更多中</div>
+          </div>
+          <div class="vl-nodata" v-show="dynamics.length === 0">暂无动态</div>
         </mt-tab-container-item>
         <mt-tab-container-item id="2">
-          <comment-item v-for="(comment, i) in comments" :data="comment" v-on:deletecomment="deletecomment(i)"></comment-item>
+          <comment-item v-for="(comment, i) in comments" :data="comment" v-on:deletecomment="deletecomment(comment)"></comment-item>
+          <div class="vl-nodata" v-show="comments.length === 0">你还没有发表评论</div>
         </mt-tab-container-item>
       </mt-tab-container>
     </div>
@@ -33,6 +39,8 @@
 </template>
 
 <script>
+
+import moment from 'moment'
 
 import {appendDynamics} from '../../utils/dealDynamic'
 
@@ -48,10 +56,11 @@ export default {
   data () {
     return{
       selected:'1',
-      comments: [{}, {}, {}, {}],
+      comments: [],
       dynamics: [],
       queryPage: 1,
       querySize: 10,
+      loading: false
     }
   },
 
@@ -79,32 +88,47 @@ export default {
     })
 
     // 我的评论
-    // this.$request.post(this.$getUrl('comments'))
-    //   .send({
-    //     	commentator: {
-    //         openId: this.$store.state.identity.openId
-    //       }
-    //   })
-    //   .then((res) => {
-    //     if (res.body.responseCode === '000') {
-    //       this.comments = _.map(res.body.dto.results, (item) => {
-    //         return {
-    //           commentxt: item.content,
-    //           commentdate: moment(item.createTime).format('MM-DD'),
-    //           dynamicText: i
-    //           commentname:
-    //           commenttxt
-    //         }
-    //       })
-    //     } else {
-    //       this.$toast(res.body.responseMsg)
-    //     }
-    //   })
+    this.$request.post(this.$getUrl('comments'))
+      .send({
+        	commentator: {
+            openId: this.$store.state.identity.openId
+          }
+      })
+      .then((res) => {
+        if (res.body.responseCode === '000') {
+          this.comments = _.map(res.body.dto.results, (item) => {
+            return {
+              commentxt: item.content,
+              commentdate: moment(item.createTime).format('MM-DD'),
+              dynamicText: item.dynamicContent,
+              commentname: item.comments[0] && item.comments[0].nickname,
+              replyText: item.comments[0] && item.comments[0].content
+            }
+          })
+        } else {
+          this.$toast(res.body.responseMsg)
+        }
+      })
   },
 
   methods:{
-    deletecomment(i){
-      this.comments.splice(i,1)
+    deletecomment(comment){
+      this.$request.post(this.$getUrl('comment/' + comment.id))
+        .then((res) => {
+          if (res.body.responseCode === '000') {
+            console.log('delete');
+          } else {
+            this.$toast(res.body.responseMsg)
+          }
+        })
+    },
+
+    loadMore() {
+
+    },
+    
+    goDetails(dynamic){
+      this.$router.push('/dynamicdetails/'+dynamic.id)
     },
 
   }

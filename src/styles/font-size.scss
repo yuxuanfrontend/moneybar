@@ -1,4 +1,6 @@
-$bodyFontSize: 16px;
+$bodyFontSize: 14px;
+$smallSize: $bodyFontSize * 0.857;
+$smallerSize: $bodyFontSize * 0.714;
 
 html {
   font-size: 20px;
@@ -31,6 +33,10 @@ body {
   }
 }
 
-.vl-font-smaller {
+.vl-font-small {
   font-size: $bodyFontSize * 0.875;
+}
+
+.vl-font-smaller {
+  font-size: $bodyFontSize * 0.714;
 }

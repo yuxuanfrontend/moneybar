@@ -9,12 +9,10 @@
 
   &__head, &__body {
     margin-bottom: px2rem(10);
-    color: $color-333;
   }
 
   &__content{
-    color: $color-666;
-    font-size: 16px;
+    color: $color-333;
     line-height: px2rem(22);
   }
 
@@ -56,7 +54,6 @@
 
   &__title {
     margin: px2rem(6) 0;
-    color: $color-333;
   }
 
   &__content {
@@ -96,7 +93,7 @@
     <div class="dynamic-box__body">
       <div class="dynamic-box__title">{{data.title}}</div>
       <!-- <div class="dynamic-box__img" v-if="data.images && data.images.length > 0"><horizon-images :images="data.images"></horizon-images></div> -->
-      <div class="dynamic-box__content">{{data.content}}</div>
+      <div class="dynamic-box__content vl-font-small">{{data.content}}</div>
     </div>
     <div class="dynamic-box__foot">
       <div class="dynamic-box__info">
