@@ -1,6 +1,7 @@
 <style lang="scss" scoped>
 .team-group {
   display: flex;
+  align-items: flex-start;
   padding: 20px 0;
   background-color: #fff;
 
@@ -99,7 +100,7 @@ export default {
   },
 
   mounted() {
-    this.$request.get(this.$getUrl('moneies'))
+    this.$requestWithLoading('get', 'moneies')
       .then((res) => {
         if (res.body.responseCode === '000') {
 

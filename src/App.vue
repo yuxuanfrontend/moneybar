@@ -44,13 +44,13 @@ export default {
       next()
     })
 
-    let testOpenIds = [
-      '123456789',
-      '223456789',
-      '323456789',
-    ]
-
-    this.$store.commit('initOpenId', testOpenIds[Math.floor(Math.random()*3)])
+    // let testOpenIds = [
+    //   '123456789',
+    //   '223456789',
+    //   '323456789',
+    // ]
+    //
+    // this.$store.commit('initOpenId', testOpenIds[Math.floor(Math.random()*3)])
   }
 }
 </script>

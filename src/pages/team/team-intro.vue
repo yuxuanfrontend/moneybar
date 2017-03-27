@@ -82,7 +82,7 @@
     height: px2rem(40);
   }
   &__userimg img{
-    width: px2rem(30);
+    // width: px2rem(30);
   }
 
 }

@@ -73,16 +73,18 @@
 </style>
 <template lang="html">
   <div class="page">
-    <div class="topic-details">
-      <div class="topic-tab__bd">
-        <div class="topic-tab__title">
-          {{topicName}}
+    <div class="page">
+      <div class="topic-details">
+        <div class="topic-tab__bd">
+          <div class="topic-tab__title">
+            {{topicName}}
+          </div>
+          <div class="topic-tab__describe">
+            {{ dynamicNum }}篇帖子
+          </div>
         </div>
-        <div class="topic-tab__describe">
-          {{ dynamicNum }}篇帖子
-        </div>
+        <dynamic-item v-for="dynamic in dynamicDatas" :data="dynamic" v-on:click.native="dynamicdetails(dynamic)"></dynamic-item>
       </div>
-      <dynamic-item v-for="dynamic in dynamicDatas" :data="dynamic" v-on:click.native="dynamicdetails(dynamic)"></dynamic-item>
     </div>
     <div class="vl-nodata" v-if="dynamicDatas.length === 0">暂无动态</div>
     <div class="vl-float-button" @click="goPublish"><img src="../../assets/edit.png" alt=""></div>

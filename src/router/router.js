@@ -2,9 +2,10 @@ import home from '../pages/home'
 import mainTab from '../pages/main-tab'
 
 import dynamiTab from '../pages/dynamic/dynamic-tab'
-import topicTab from '../pages/topic/topic-tab'
-import topiclist from '../pages/topic/topic-list'
-import topicdetails from '../pages/topic/topic-details'
+// import topicTab from '../pages/topic/topic-tab'
+import newTopicTab from '../pages/topic/new-topic-tab'
+// import topiclist from '../pages/topic/topic-list'
+// import topicdetails from '../pages/topic/topic-details'
 import teamTab from '../pages/team/team-tab'
 import teamdetails from '../pages/team/team-details'
 import teamintro from '../pages/team/team-intro'
@@ -17,12 +18,22 @@ import personalinfo from '../pages/personal/personal-info'
 import myMessage from '../pages/personal/my-message'
 
 import publish from '../pages/publish/publish'
+import preview from '../pages/publish/publish-preview'
+import viewpoint from '../pages/publish/publish-viewpoint'
+
+import test from '../pages/test'
 
 module.exports = [
   {
+    path: '/test',
+    name: 'test',
+    component: test
+  },
+  {
     path: '/',
-    name: '钱吧',
-    component: home
+    // name: '钱吧',
+    // component: home
+    redirect: '/main-tab/dynamic'
   },
 
   {
@@ -38,7 +49,7 @@ module.exports = [
       {
         path: 'topic',
         name: '话题',
-        component: topicTab
+        component: newTopicTab
       },
 
       {
@@ -58,17 +69,17 @@ module.exports = [
     name:'举报',
     component:report
   },
-  {
-    path:'/topiclist',
-    name:'话题列表',
-    component:topiclist
-  },
-
-  {
-    path:'/topicdetails/:id',
-    name:'话题详情',
-    component:topicdetails
-  },
+  // {
+  //   path:'/topiclist',
+  //   name:'话题列表',
+  //   component:topiclist
+  // },
+  //
+  // {
+  //   path:'/topicdetails/:id',
+  //   name:'话题详情',
+  //   component:topicdetails
+  // },
 
   {
     path:'/teamdetails/:id',
@@ -110,6 +121,17 @@ module.exports = [
     path: '/publish',
     name: '发表',
     component: publish
-  }
+  },
 
+  {
+    path: '/viewpoint',
+    name: '你的观点',
+    component: viewpoint,
+  },
+
+  {
+    path: '/preview',
+    name: '预览',
+    component: preview,
+  },
 ];

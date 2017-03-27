@@ -1,11 +1,15 @@
 export default {
   state: {
-    openId: '111',
+    openId: '',
+    username: '',
+    head: '',
   },
 
   mutations: {
-    initOpenId(state, value) {
-      state.openId = value
+    initUserInfo(state, value) {
+      state.openId = value.openId
+      state.username = value.username
+      state.head = value.head
     }
   }
 }

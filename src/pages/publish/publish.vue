@@ -36,13 +36,13 @@
             </li>
           </ul>
           <div class="weui-uploader__input-box">
-            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple>
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple capture="camera">
           </div>
         </div>
       </div>
     </div>
     <div style="padding:10px;">
-      <mt-button type="primary" class="vl-right" :disabled="isPublishDisabled" @click.native="publish">发表</mt-button>
+      <mt-button type="primary" class="vl-right" @click.native="preview">预览</mt-button>
     </div>
   </div>
 </template>
@@ -50,6 +50,7 @@
 <script>
 
 import _ from "lodash"
+import { Indicator } from 'mint-ui'
 
 import exif from '../../utils/exif.js'
 import compressImg from '../../utils/processImg.js'
@@ -68,37 +69,67 @@ export default {
   computed: {
     isPublishDisabled() {
       return this.title.trim() === '' || this.content.trim() === ''
+    },
+
+    formatContent() {
+      return this.content.replace(/ /g,"&nbsp;").replace(/\n/g,"<br/>")
     }
   },
 
   mounted() {
+    this.title = this.$store.state.publishPreview.title
+    this.content = this.$store.state.publishPreview.container
+    this.uploadImages = this.$store.state.publishPreview.images
+
     let _this = this
 
-    compressImg('uploaderInput', 320, function(images) {
-      console.log(images.length);
+    compressImg('uploaderInput', 640, function(images) {
       // _this.uploadImages = _this.uploadImages.concat(images)
-      console.log(_this.uploadImages.length);
+      let blobFiles = []
       _.each(images, item => {
         let blobFile = _this.convertBase64ToBlob(item)
-        _this.uploadImage(blobFile)
+        blobFiles.push(blobFile)
       })
+      _this.uploadImage(blobFiles)
     })
   },
 
   methods: {
-    uploadImage(file) {
+    getUUID() {
+      var s = [];
+      var hexDigits = "0123456789abcdef";
+      for (var i = 0; i < 36; i++) {
+          s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+      }
+      s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
+      s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
+      s[8] = s[13] = s[18] = s[23] = "-";
+
+      var uuid = s.join("");
+      return uuid;
+    },
+    uploadImage(files) {
       // let choosedFile = this.$refs.avator.files[0]
       let sendData = new FormData()
 
-      sendData.append('file', file, 'avator.' + file.type.split('/')[1])
+      Indicator.open()
 
-      this.$request.post('http://192.168.228.236:8081/api/upload/files')
+      // sendData.append('file', file, this.getUUID() + '.' + file.type.split('/')[1])
+      files.forEach(item => {
+        sendData.append('files', item, 'image.' + item.type.split('/')[1])
+      })
+
+      // this.$request.post('http://192.168.228.236:8086/file-inrpc/file/uploads')
+      this.$request.post('https://wjs.yinli99.com/file-inrpc/file/uploads')
         .send(sendData)
         .then((res) => {
-          if (res.body.code === '000') {
-            this.uploadImages.push(res.body.t)
+          Indicator.close()
+          if (res.body.responseCode === '000') {
+            res.body.dto.forEach(item => {
+              this.uploadImages.push(item.downloadPath)
+            })
           } else {
-            this.$toast(res.body.msg)
+            this.$toast(res.body.responseMessage)
           }
         })
     },
@@ -123,38 +154,60 @@ export default {
       return blob1
     },
 
-    publish() {
-      if (this.title.trim() === '' || this.content.trim() === '') {
-        this.$toast('标题和内容不能为空')
+    preview() {
+      if (this.title.trim() === '') {
+        this.$toast('文章标题未输入')
         return false
       }
 
-      this.$request.post(this.$getUrl('dynamic/' + this.$store.state.identity.openId))
-        .send({
-          topic: {
-            id: this.$route.query.type === 2 ? this.$route.query.id : null,
-          },
-          group: {
-            id: this.$route.query.type === 3 ? this.$route.query.id : null
-          },
-          type: this.$route.query.type,
-          title: this.title,
-          content: this.content,
-          attachments: _.map(this.uploadImages, item => {
-            return {
-              path: item
-            }
-          })
-        })
-        .then((res) => {
-          if (res.body.responseCode === '000') {
+      if (this.content.trim() === '') {
+        this.$toast('请输入正文')
+        return false
+      }
 
-            this.$toast('发布成功')
-            this.$router.back()
-          } else {
-            this.$toast(res.body.responseMsg)
-          }
-        })
+      this.$store.commit('setPreview', {
+        head: this.$store.state.identity.head,
+        username: this.$store.state.identity.username,
+        date: Date.now(),
+        title: this.title,
+        container: this.content,
+        images: this.uploadImages,
+      })
+
+      this.$router.push({
+        path: '/preview',
+        query: {
+          type: this.$route.query.type,
+          id: this.$route.query.id,
+        }
+      })
+
+      // this.$request.post(this.$getUrl('dynamic/' + this.$store.state.identity.openId))
+      //   .send({
+      //     topic: {
+      //       id: this.$route.query.type === 2 ? this.$route.query.id : null,
+      //     },
+      //     group: {
+      //       id: this.$route.query.type === 3 ? this.$route.query.id : null
+      //     },
+      //     type: this.$route.query.type,
+      //     title: this.title,
+      //     content: this.content,
+      //     attachments: _.map(this.uploadImages, item => {
+      //       return {
+      //         path: item
+      //       }
+      //     })
+      //   })
+      //   .then((res) => {
+      //     if (res.body.responseCode === '000') {
+      //
+      //       this.$toast('发布成功,等待审核')
+      //       this.$router.back()
+      //     } else {
+      //       this.$toast(res.body.responseMsg)
+      //     }
+      //   })
     }
   }
 }

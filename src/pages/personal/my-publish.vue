@@ -23,7 +23,7 @@
       <mt-tab-container v-model="selected" >
         <mt-tab-container-item id="1" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="0" infinite-scroll-immediate-check="false">
           <dynamic-item v-for="dynamic in dynamics" :data="dynamic" v-on:click.native="goDetails(dynamic)"></dynamic-item>
-          <div class="scroll-loading" v-show="loading||dynamics.length !== 0">
+          <div class="scroll-loading" v-show="loading && dynamics.length !== 0">
             <mt-spinner class="scroll-loading__spinner" type="fading-circle" :size="20"></mt-spinner>
             <div> 加载更多中</div>
           </div>
@@ -98,6 +98,7 @@ export default {
         if (res.body.responseCode === '000') {
           this.comments = _.map(res.body.dto.results, (item) => {
             return {
+              id: item.id,
               commentxt: item.content,
               commentdate: moment(item.createTime).format('MM-DD'),
               dynamicText: item.dynamicContent,
@@ -113,10 +114,11 @@ export default {
 
   methods:{
     deletecomment(comment){
-      this.$request.post(this.$getUrl('comment/' + comment.id))
+      console.log(comment);
+      this.$request.delete(this.$getUrl('comment/' + comment.id))
         .then((res) => {
           if (res.body.responseCode === '000') {
-            console.log('delete');
+            this.comments.splice(this.comments.indexOf(comment), 1)
           } else {
             this.$toast(res.body.responseMsg)
           }
@@ -126,7 +128,7 @@ export default {
     loadMore() {
 
     },
-    
+
     goDetails(dynamic){
       this.$router.push('/dynamicdetails/'+dynamic.id)
     },

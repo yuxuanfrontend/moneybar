@@ -43,6 +43,7 @@
     color: $color-666;
     line-height: px2rem(20);
     font-size: 14px;
+    text-align: justify;
   }
   &__foot{
     display: flex;
@@ -74,7 +75,7 @@
       line-height: px2rem(18);
       height: px2rem(32);
       box-sizing: border-box;
-      border: 1px solid #eeeeee;
+      border: 1px solid #b2b2b2;
       font-size: 14px;
       text-indent: px2rem(5);
       outline: none;
@@ -154,13 +155,13 @@
         <div class="mint-cell-allow-right"> </div>
       </div>
       <div class="dynamic-details__username">
-        <div> <img src="../../assets/iconfont-yonghu.png" alt="">{{ username }} </div>
+        <div> <img :src="head" alt="">{{ username }} </div>
         <div class="dynamic-details__date"> {{ date }} </div>
       </div>
 
       <div class="dynamic-details__bd">
         <div class="dynamic-details__title"> {{ title }} </div>
-        <div class="dynamic-details__txt"> {{ container }} </div>
+        <div class="dynamic-details__txt" v-html="container.replace(/ /g,'&nbsp;').replace(/\n/g,'<br/>')"></div>
         <div class="dynamic-details_gallary">
           <img :src="image" v-for="image in images" style="width: 100%;">
         </div>
@@ -218,6 +219,7 @@ export default {
       choosedParentComment: null,
       replySheetVisible: false,
 
+      head: '',
       topicId: null,
       teamId: null,
       topictitle:'',
@@ -226,7 +228,7 @@ export default {
       container:'',
       username:'',
       date:'',
-      inputPlaceholder:'',
+      inputPlaceholder:'在这里输入内容',
       readAmount: 0,
       commentAmount: 0,
       comments:[],
@@ -244,7 +246,7 @@ export default {
     this.$request.get(this.$getUrl('dynamic/readCount/' + this.$route.params.id))
       .then((res) => {})
 
-    this.$request.post(this.$getUrl('dynamics'))
+    this.$requestWithLoading('post', 'dynamics')
       .send({
         id: this.$route.params.id
       })
@@ -266,6 +268,7 @@ export default {
           this.topicId = data.topicId
           this.teamId = data.groupId
           this.images = data.attachmentPaths
+          this.head = data.head
 
           // 读取评论
           this.comments = []
@@ -352,7 +355,7 @@ export default {
       this.$request.post(this.$getUrl('comment/publish/' + this.$route.params.id))
         .send({
           commentator: {
-            openId: '111'
+            openId: this.$store.state.identity.openId
           },
           content: this.myComment,
         })
@@ -370,6 +373,7 @@ export default {
 
             this.$toast('发布成功')
             this.myComment = ''
+            this.inputPlaceholder = '在这里输入内容'
           } else {
             this.$toast(res.body.responseMsg)
           }
@@ -381,7 +385,7 @@ export default {
       this.$request.post(this.$getUrl('comment/publish/child/' + this.choosedComment.id))
         .send({
           commentator: {
-            openId: '111'
+            openId: this.$store.state.identity.openId
           },
           content: this.myComment
         })
@@ -408,6 +412,7 @@ export default {
             this.choosedComment = null
             this.$toast('发布成功')
             this.myComment = ''
+            this.inputPlaceholder = '在这里输入内容'
           } else {
             this.$toast(res.body.responseMsg)
           }

@@ -28,14 +28,12 @@
   }
 
   &__info {
+    display: flex;
+    align-items: center;
     flex: 1;
 
     div {
       margin-right: px2rem(6);
-    }
-
-    img {
-      vertical-align: middle;
     }
   }
 
@@ -73,37 +71,49 @@
   }
 
   &__avator {
-    height:14px;
+    width: 16px;
+    height:16px;
     border-radius: 50%;
-    // border: 1px solid #222;
+    background-size: cover;
   }
 
   &__icon{
     width: px2rem(20);
+  }
+
+  &__stick, &__essence {
+    color: #fff;
+    background-color: #f1313a;
+    padding: 1px 4px;
+    margin-right: 4px;
+    border-radius: 2px;
   }
 }
 </style>
 
 <template lang="html">
   <div class="dynamic-box">
-    <div class="dynamic-box__head">
-      <div class="dynamic-box__topic" v-if="data.type===2">#话题#{{data.topic}}</div>
-      <div v-if="data.type===3">来自<span class="dynamic-box__team" @click.stop="goTeam">{{data.teamName}}</span></div>
-    </div>
+    <!-- <div class="dynamic-box__head">
+      <div class="dynamic-box__topic" v-if="data.type===2" @click.stop="goTopic">#话题#{{data.topicName}}</div>
+      <div v-if="data.type===3">来自<span class="dynamic-box__team" @click.stop="goTeam">{{data.groupName}}</span></div>
+    </div> -->
     <div class="dynamic-box__body">
-      <div class="dynamic-box__title">{{data.title}}</div>
+      <div class="dynamic-box__title"><span class="dynamic-box__stick" v-if="data.stick">置顶</span><span class="dynamic-box__essence" v-if="data.essence">精华</span>{{data.title}}</div>
       <!-- <div class="dynamic-box__img" v-if="data.images && data.images.length > 0"><horizon-images :images="data.images"></horizon-images></div> -->
+      <div class="dynamic-box_img">
+        <horizon-photos :images="data.attachmentPaths || []"></horizon-photos>
+      </div>
       <div class="dynamic-box__content vl-font-small">{{data.content}}</div>
     </div>
     <div class="dynamic-box__foot">
       <div class="dynamic-box__info">
-        <div><img class="dynamic-box__avator" :src="data.avator"></div>
+        <div class="dynamic-box__avator" :style="{'background-image': 'url(' + data.head + ')'}"></div>
         <div>{{data.nickname}}</div>
-        <div>{{data.time}}</div>
+        <div>{{data.createTime | time-HHmm}}</div>
       </div>
       <div class="dynamic-box__statistic">
-        <div><img class="dynamic-box__icon" src="../assets/pageview.png" alt="">{{data.readAmount}}</div>
-        <div><img class="dynamic-box__icon" src="../assets/comment.png" alt="">{{data.commentAmount}}</div>
+        <div><img class="dynamic-box__icon" src="../assets/pageview.png" alt="">{{data.readCount}}</div>
+        <div><img class="dynamic-box__icon" src="../assets/comment.png" alt="">{{data.commentCount}}</div>
       </div>
     </div>
   </div>
@@ -111,17 +121,11 @@
 
 <script>
 
-import horizonImages from './horizon-images'
+import horizonPhotos from './horizon-photos'
 import avator from '../assets/iconfont-yonghu.png'
 import logo from '../assets/logo.png'
 
 export default {
-  data() {
-    return {
-
-    }
-  },
-
   props: {
     data: {
       default() {
@@ -145,12 +149,16 @@ export default {
 
   methods: {
     goTeam() {
-      this.$router.push('/teamdetails/2')
+      this.$router.push('/teamdetails/' + this.data.teamId)
+    },
+
+    goTopic() {
+      this.$router.push('/teamdetails/' + this.data.topicId)
     }
   },
 
   components: {
-    horizonImages
+    horizonPhotos
   }
 }
 </script>

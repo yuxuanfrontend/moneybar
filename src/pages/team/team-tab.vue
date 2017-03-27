@@ -46,36 +46,41 @@
     margin-top: px2rem(5);
     line-height: px2rem(20);
     color: $color-666;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 </style>
 
 <template lang="html">
   <div class="page page--navbar">
-    <mt-loadmore :top-method="loadTop" ref="loadmore">
-      <div class="team-list" v-for="(team,index) in teams" @click="teamdetails(team)">
-        <div class="team-list__logo">
-          <img :src="team.logo" alt="">
+    <div class="team-list" v-for="(team,index) in teams" @click="teamdetails(team)">
+      <div class="team-list__logo">
+        <img :src="team.logo" alt="">
+      </div>
+      <div class="team-list__bd">
+        <div class="team-list__info">
+          <div class="team-list__name">
+            {{team.teamName}}
+          </div>
+          <div class="team-list__bar">
+            <!-- <img src="../../assets/iconfont-yonghu.png" alt="">
+            <span>{{ team.poepleNum }}</span> -->
+            <img src="../../assets/comment.png" alt="">
+            <span>{{ team.dynamicNum }}</span>
+          </div>
         </div>
-        <div class="team-list__bd">
-          <div class="team-list__info">
-            <div class="team-list__name">
-              {{team.teamName}}
-            </div>
-            <div class="team-list__bar">
-              <!-- <img src="../../assets/iconfont-yonghu.png" alt="">
-              <span>{{ team.poepleNum }}</span> -->
-              <img src="../../assets/comment.png" alt="">
-              <span>{{ team.dynamicNum }}</span>
-            </div>
-          </div>
-          <div class="team-list__txt vl-font-small">
-            {{team.teamTxt}}
-          </div>
+        <div class="team-list__txt vl-font-small">
+          {{team.teamTxt}}
         </div>
       </div>
-      <div class="vl-nodata" v-if="teams.length === 0">暂无小组</div>
-    </mt-loadmore>
+    </div>
+    <div class="vl-nodata" v-if="teams.length === 0">暂无小组</div>
+    <!-- <mt-loadmore :top-method="loadTop" ref="loadmore">
+    </mt-loadmore> -->
   </div>
 
 </template>

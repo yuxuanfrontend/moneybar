@@ -62,8 +62,8 @@
 </style>
 
 <template lang="html">
-  <div class="page page--navbar">
-    <mt-loadmore :top-method="loadTop" ref="loadmore">
+  <div class="page">
+    <div class="page page--navbar">
       <div class="topic-tab">
         <div class="topic-tab__hd">
           <div class="topic-tab__subject">
@@ -84,7 +84,9 @@
         <dynamic-item v-for="dynamic in dynamicDatas" :data="dynamic" v-on:click.native="dynamicdetails(dynamic)"></dynamic-item>
       </div>
       <div class="vl-nodata" v-show="dynamicDatas.length === 0">暂无动态</div>
-    </mt-loadmore>
+      <!-- <mt-loadmore :top-method="loadTop" ref="loadmore">
+      </mt-loadmore> -->
+    </div>
     <div class="vl-float-button" v-show="newTopic.id" @click="goPublish"><img src="../../assets/edit.png" alt=""></div>
   </div>
 </template>

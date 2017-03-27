@@ -47,28 +47,30 @@
 </style>
 <template lang="html">
   <div class="page team-detail">
-    <div class="team-detail__hd" @click="teamIntro">
-      <div class="team-detail__logo">
-        <img :src="logo" alt="">
-      </div>
-      <div class="team-detail__info">
-        <div class="team-detail__title">
-          {{ teamname }}
+    <div class="page">
+      <div class="team-detail__hd" @click="teamIntro">
+        <div class="team-detail__logo">
+          <img :src="logo" alt="">
         </div>
-        <div class="team-detail__bar">
-          <span style="margin-right:25px;">管理员:{{username}}</span>
-          <!-- <img src="../../assets/iconfont-yonghu.png" alt="">
-          <span>{{ number }}</span> -->
-          <img src="../../assets/comment.png" alt="">
-          <span>{{ dynamicNum }}</span>
+        <div class="team-detail__info">
+          <div class="team-detail__title">
+            {{ teamname }}
+          </div>
+          <div class="team-detail__bar">
+            <span style="margin-right:25px;">管理员:{{username}}</span>
+            <!-- <img src="../../assets/iconfont-yonghu.png" alt="">
+            <span>{{ number }}</span> -->
+            <img src="../../assets/comment.png" alt="">
+            <span>{{ dynamicNum }}</span>
+          </div>
+        </div>
+        <div class="mint-cell-allow-right">
         </div>
       </div>
-      <div class="mint-cell-allow-right">
-      </div>
-    </div>
-    <div class="team-detai__bd">
-      <div class="">
-        <dynamic-item v-for="(dynamic, dynamicIndex) in dynamics" :data="dynamic"  @click.native="$router.push('/dynamicdetails/' + (dynamicIndex + 1))"></dynamic-item>
+      <div class="team-detai__bd">
+        <div class="">
+          <dynamic-item v-for="(dynamic, dynamicIndex) in dynamics" :data="dynamic"  @click.native="$router.push('/dynamicdetails/' + dynamic.id)"></dynamic-item>
+        </div>
       </div>
     </div>
     <div class="vl-float-button" @click="goPublish"><img src="../../assets/edit.png" alt=""></div>
@@ -82,6 +84,7 @@ import moment from 'moment'
 import dynamicItem from '../../components/dynamic-item'
 
 export default {
+  name: 'team-detail',
   data () {
     return {
       teamname:'油一分小组',
@@ -113,26 +116,30 @@ export default {
         .send({
           group: {
             id: this.$route.params.id
-          }
+          },
+          orderByCreateTimeDesc: true,
+          statusVal: '1'
         })
         .then((res) => {
           if (res.body.responseCode === '000') {
-            this.dynamics = []
-            _.each(res.body.dto.results, (item) => {
-              this.dynamics.push({
-                id: item.id,
-                type: item.type,
-                topic: item.topicName,
-                teamName: item.groupName,
-                title: item.title,
-                content: item.content,
-                avator: item.memberPath,
-                nickname: item.nickname,
-                time: moment(item.createTime).format('HH:mm'),
-                readAmount: item.readCount,
-                commentAmount: item.commentCount
-              })
-            })
+            this.dynamics = res.body.dto.results
+
+            // this.dynamics = []
+            // _.each(res.body.dto.results, (item) => {
+            //   this.dynamics.push({
+            //     id: item.id,
+            //     type: item.type,
+            //     topic: item.topicName,
+            //     teamName: item.groupName,
+            //     title: item.title,
+            //     content: item.content,
+            //     avator: item.head,
+            //     nickname: item.nickname,
+            //     time: moment(item.createTime).format('HH:mm'),
+            //     readAmount: item.readCount,
+            //     commentAmount: item.commentCount
+            //   })
+            // })
           } else {
             this.$toast(res.body.responseMsg)
           }

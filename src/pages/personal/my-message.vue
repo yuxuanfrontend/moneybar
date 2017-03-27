@@ -1,42 +1,43 @@
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../../styles/colors.scss";
 @import "../../styles/px2rem.scss";
 
 .my-heard{
-  &__bd,
-  &__comment{
-    border-bottom: 1px solid #eeeeee;
-  }
-  &__hd,
-  &__comment,
-  &__bd,
-  &__foot{
-    background: $background-white;
-    padding:px2rem(5) px2rem(15);
-    font-size: 16px;
-    line-height: px2rem(20);
-    color: $color-333;
-  }
-  &__hd,
-  &__user{
+  padding: px2rem(10) 0;
+  margin-bottom: px2rem(10);
+  background-color: $background-white;
+
+  &__hd {
     display: flex;
     justify-content: space-between;
+    padding: 0 px2rem(10);
+  }
+
+  &__user {
+    display: flex;
+    justify-content: flex-start;
     align-items: center;
-    font-size: 16px;
-    img{
-      width: px2rem(30);
-      margin-right: px2rem(5);
-    }
   }
-  &__comment{
-    text-indent: px2rem(15);
+
+  &__comment {
+    padding: px2rem(4) px2rem(10);
   }
-  &__foot{
-    div{
-      padding: px2rem(5) 0;
-    }
+
+  &__bd {
+    padding: px2rem(4) px2rem(10);
+    background-color: $background-gray;
+  }
+
+  &__foot {
+    padding: px2rem(4) px2rem(10);
+    padding-bottom: 0;
   }
 }
+
+.ml10 {
+  margin-left: px2rem(10);
+}
+
 .sign{
   width: px2rem(6);
   height: px2rem(6);
@@ -51,14 +52,14 @@
     <div class="my-heard" v-for="message in messages">
         <div class="my-heard__hd">
           <div class="my-heard__user">
-            <div><img :src="message.avator" alt=""></div>
-            <div>{{ message.nickname }} </div>
-            <div class="sign"></div>
+            <div><img :src="message.avator" style="width:24px;"></div>
+            <div class="ml10">{{ message.nickname }} </div>
+            <div class="sign ml10"></div>
           </div>
           <div>{{ message.date }} </div>
         </div>
         <div class="my-heard__comment"> {{ message.content }} </div>
-        <div class="my-heard__bd">
+        <div class="my-heard__bd vl-font-small">
           <div> {{ message.dynamicContent }}</div>
         </div>
         <div class="my-heard__foot" v-for="reply in message.replies">
@@ -100,11 +101,11 @@ export default {
             let comment = item.comment
 
             this.messages.push({
-              avator: comment.logo,
+              avator: comment.head,
               nickname: comment.nickname ,
               date: moment(comment.createTime).format("MM-DD"),
               content: comment.content,
-              dynamicContent: item.dynamicContent,
+              dynamicContent: item.dynamicContent || '',
               replies: _.map(comment.comments, (comment2) => {
                 return {
                   nickname: comment2.nickname,
