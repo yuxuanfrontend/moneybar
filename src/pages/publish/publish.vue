@@ -55,14 +55,12 @@ import { Indicator } from 'mint-ui'
 import exif from '../../utils/exif.js'
 import compressImg from '../../utils/processImg.js'
 
-import testImg from '../../assets/logo.png'
-
 export default {
   data() {
     return {
       title: '',
       content: '',
-      uploadImages: []
+      uploadImages: [],
     }
   },
 
@@ -84,7 +82,6 @@ export default {
     let _this = this
 
     compressImg('uploaderInput', 640, function(images) {
-      // _this.uploadImages = _this.uploadImages.concat(images)
       let blobFiles = []
       _.each(images, item => {
         let blobFile = _this.convertBase64ToBlob(item)

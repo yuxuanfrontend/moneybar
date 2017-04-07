@@ -156,7 +156,7 @@
       </div>
       <div class="dynamic-details__username">
         <div> <img :src="head" alt="">{{ username }} </div>
-        <div class="dynamic-details__date"> {{ date }} </div>
+        <div class="dynamic-details__date"> {{ date | time-HHmm }} </div>
       </div>
 
       <div class="dynamic-details__bd">
@@ -175,7 +175,7 @@
           <div @click="replyComment(comment)">
             <div class="dynamic-details__commentname">
               <div>{{comment.name}}</div>
-              <div> {{ comment.commentdate }}</div>
+              <div> {{ comment.commentdate | time-HHmm }}</div>
             </div>
             <div class="dynamic-details__commentxt">{{comment.commentxt}}</div>
             <div class="dynamic-details__commentimg"><img src="../../assets/comment.png" alt="">{{comment.replies.length}}</div>
@@ -258,7 +258,7 @@ export default {
           this.username = data.nickname
           // this.inputPlaceholder = '回复' + this.username
           this.type = data.type
-          this.date = moment(data.createTime).format('HH:mm')
+          this.date = data.createTime
           this.title = data.title
           this.container = data.content
           this.readAmount = data.readCount
@@ -276,7 +276,7 @@ export default {
             this.comments.push({
               id: comment1.id,
               name: comment1.nickname,
-              commentdate: moment(comment1.createTime).format('HH:mm'),
+              commentdate: comment1.createTime,
               commentxt: comment1.content,
               replies: _.map(comment1.comments, (comment2) => {
                 return {

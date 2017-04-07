@@ -6,12 +6,17 @@ export default {
     dynamics: [],
     queryPage: 1,
     querySize: 5,
+    scrollTop: 200,
   },
 
   mutations: {
     appendDynamics(state, values) {
       state.dynamics.push(values)
     },
+
+    setScrollTop(state, value) {
+      state.scrollTop = value
+    }
   },
 
   actions: {

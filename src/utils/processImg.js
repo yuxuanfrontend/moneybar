@@ -34,6 +34,7 @@ let compressImg = function(inputId,afterWidth,callback){
 			reader.onload = function( evt ){
 				var srcString = evt.target.result;
 
+
 				//安卓获取的base64数据无信息头，加之
 				if(srcString.substring(5,10)!="image"){
 					p.src = srcString.replace(/(.{5})/,"$1image/jpeg;");
@@ -82,10 +83,18 @@ let compressImg = function(inputId,afterWidth,callback){
 
 						// canvas绘制压缩后图片
 						drawImageIOSFix(hidCtx,p, 0, 0,upImgWidth,upImgHeight,0,0,afterWidth,afterHeight);
-						// 获取压缩后生成的img对象
-						images.push(convertCanvasToImage(hidCanvas).src)
-						// self.value = "";
-						// 此处将得到的图片数据回调
+
+						// 如果图片像素小于640，则不使用压缩
+						if (upImgWidth <= 640) {
+							images.push(p.src)
+						} else {
+							// 获取压缩后生成的img对象
+							images.push(convertCanvasToImage(hidCanvas).src)
+							// self.value = "";
+							// 此处将得到的图片数据回调
+							// document.getElementById('testImg').src = p.src
+						}
+
 						if(self.files.length === images.length && callback!=undefined){callback(images)};
 					}
 				}

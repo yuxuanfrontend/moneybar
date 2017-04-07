@@ -3,7 +3,7 @@
 
 <template lang="html">
   <div class="page">
-    <div class="page page--navbar">
+    <div class="page page--navbar" @scroll="dynamicScroll" ref="scrollWrap">
       <div v-infinite-scroll="loadMore" infinite-scroll-disabled="isLoading" infinite-scroll-distance="0" infinite-scroll-immediate-check="false">
         <dynamic-item class="needsclick" v-for="dynamic in dynamicDatas" :data="dynamic" v-on:click.native.stop="goDetails(dynamic)"></dynamic-item>
       </div>
@@ -61,9 +61,16 @@ export default {
     if (this.dynamicDatas.length <= 0) {
       this.$store.dispatch('ajaxAppendDynamics')
     }
+
+    this.$refs.scrollWrap.scrollTop = this.$store.state.dynamicTab.scrollTop
   },
 
   methods:{
+    // 弹性处理scroll事件
+    dynamicScroll: _.debounce(function(event) {
+        this.$store.commit('setScrollTop', event.target.scrollTop)
+      }, 100),
+
     goDetails(dynamic){
       this.$router.push('/dynamicdetails/'+dynamic.id)
     },

@@ -36,6 +36,7 @@ export default {
         // this.
       }
       this.$request.post(this.$getUrl('dynamic/' + this.$store.state.identity.openId))
+      // this.$request.post(`http://192.168.226.183:8083/qb-inrpc/wechat/dynamic/${this.$store.state.identity.openId}`)
         .send({
           topic: {
             id: this.$route.query.type === 4 ? this.$route.query.id : null,

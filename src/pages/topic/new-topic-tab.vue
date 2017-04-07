@@ -94,15 +94,7 @@ export default {
       opposedStyle: {
         background: `url(${opposedImg})`,
       },
-      views: [
-        {
-          vote: true,
-          content: '章程懒得理你高冷，三棱镜是',
-          head: '',
-          nickname: 'lslsl',
-          createTime: 1490236448689,
-        }
-      ]
+      views: [],
     }
   },
 

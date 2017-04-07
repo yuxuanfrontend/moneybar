@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Mint from 'mint-ui'
 import RegisterVariable from './plugins/mint-message'
-import Superagent from './plugins/vue-superagent'
+import SuperagentPlugin from './plugins/vue-superagent'
 
 import fastclick from 'fastclick'
 
@@ -24,7 +24,7 @@ fastclick.attach(document.body);
 
 Vue.use(Mint)
 Vue.use(RegisterVariable)
-Vue.use(Superagent)
+Vue.use(SuperagentPlugin)
 
 // let testOpenIds = [
 //   '123456789',
@@ -34,11 +34,13 @@ Vue.use(Superagent)
 //
 // store.commit('initOpenId', testOpenIds[Math.floor(Math.random()*3)])
 
+// 在每次路由跳转的时候设置页面的title
 router.afterEach((route) => {
   document.title = route.name
 })
 
-let getUrlParams = function() {
+// 获得url参数函数
+const getUrlParams = function() {
   if (!window.location.search) {
     return {}
   }
@@ -52,6 +54,7 @@ let getUrlParams = function() {
   return obj
 }
 
+// 查询用户信息并发送给会员系统
 superagent.post(`${config.mbDomain}${getUrlParams().openId}`)
   .then(res => {
     if (res.body.responseCode === '000') {
@@ -86,7 +89,16 @@ superagent.post(`${config.mbDomain}${getUrlParams().openId}`)
     } else {
       alert('用户信息错误')
     }
+  }).catch(err => {
+    alert(err)
   })
+
+// const app = new Vue({
+//   el: '#app',
+//   router,
+//   store,
+//   render: c => c(App)
+// })
 
 
 // 安卓手机输入框被软键盘遮住问题
